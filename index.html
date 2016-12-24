@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>nwjs-markdown-preview</title>
+    <link rel="stylesheet" type="text/css" href="./ui.css" />
+    <link rel="stylesheet" type="text/css" href="./git-flavored.css" />
+    <link rel="stylesheet" type="text/css" href="./lib/font-awesome/css/font-awesome.min.css" />
+    <script>
+      let _init = () => {
+        const gui = require('nw.gui');
+        const argv = gui.App.argv;
+        const inputPath = argv[argv.indexOf('-i') + 1];
+
+        if (!inputPath) {
+          alert('Please give me an input path with -i\nInput file path is: ' + inputPath);
+          gui.App.quit();
+        };
+
+        window.app = {
+          UI: require('./ui.js')(document),
+          RenderRequest: require('./render-request.js'),
+          render: () => {
+            app.UI.toggleRequestAnimation(true);
+            let request = new app.RenderRequest(inputPath, 'raw');
+            request.compile().then((req) => {
+              app.UI.setContent(req.compiledHTMLDocument);
+              console.log(req);
+            })
+            .catch((err) => {
+              console.log(err)
+            })
+            .finally(app.UI.toggleRequestAnimation);
+          }
+        };
+
+
+        app.UI.initUI();
+        app.render();
+      };
+      document.addEventListener('DOMContentLoaded', _init);
+    </script>
+  </head>
+  <body>
+    <titlebar>
+      <i class="fa fa-pull-right fa-refresh" onclick="app.render();" data-refresh></i>
+    </titlebar>
+    <container>
+      <content>
+      </content>
+    </container>
+  </body>
+</html>

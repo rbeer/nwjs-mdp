@@ -1,4 +1,16 @@
 {
-	"name": "markdown-wjs-preview",
-	"main": "index.html"
+  "name": "nwjs-markdown-preview",
+  "descitption": "Markdown Preview using NWJS",
+  "repository": "https://github.com/rbeer/nwjs-markdown-preview",
+  "author": "Raphael Beer <raphael.beer@protonmail.com>",
+  "license": "MIT",
+  "main": "index.html",
+  "window": {
+    "frame": false,
+    "fullscreen": false
+  },
+  "dependencies": {
+    "request": "^2.79.0",
+    "request-promise": "^4.1.1"
+  }
 }
