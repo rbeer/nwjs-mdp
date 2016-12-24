@@ -25,6 +25,7 @@ titlebar i.fa {
   -webkit-app-region: no-drag;
   margin-right: 5px;
   margin-top: 5px;
+  cursor: pointer;
 }
 
 container {

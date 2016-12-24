@@ -16,23 +16,25 @@
           gui.App.quit();
         };
 
-        window.app = {
+        let app = {
           UI: require('./ui.js')(document),
-          RenderRequest: require('./render-request.js'),
-          render: () => {
-            app.UI.toggleRequestAnimation(true);
-            let request = new app.RenderRequest(inputPath, 'raw');
-            request.compile().then((req) => {
-              app.UI.setContent(req.compiledHTMLDocument);
-              console.log(req);
-            })
-            .catch((err) => {
-              console.log(err)
-            })
-            .finally(app.UI.toggleRequestAnimation);
-          }
+          RenderRequest: require('./render-request.js')
         };
+        app.render = () => {
+          app.UI.toggleRequestAnimation(true);
+          let request = new app.RenderRequest(inputPath, 'raw');
+          request.compile().then((req) => {
+            app.UI.setContent(req.compiledHTMLDocument);
+            console.log(req);
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+          .finally(app.UI.toggleRequestAnimation);
+        };
+        app.close = () => gui.App.quit();
 
+        window.app = app;
 
         app.UI.initUI();
         app.render();
@@ -42,6 +44,7 @@
   </head>
   <body>
     <titlebar>
+      <i class="fa fa-pull-right fa-times" onclick="app.close();"></i>
       <i class="fa fa-pull-right fa-refresh" onclick="app.render();" data-refresh></i>
     </titlebar>
     <container>
