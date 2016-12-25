@@ -7,14 +7,28 @@
     <link rel="stylesheet" type="text/css" href="./git-flavored.css" />
     <link rel="stylesheet" type="text/css" href="./lib/font-awesome/css/font-awesome.min.css" />
     <script>
+      let parseArgv = (args) => {
+        let options = {
+          i: '',        // no standard input file; -i ''
+          w: true,      // auto attach file-watcher; -w true
+        };
+        for (let key in options) {
+          let flagIdx = args.indexOf('-' + key);
+          if (flagIdx > -1) {
+            options[key] = args[flagIdx + 1];
+          }
+        }
+        return options;
+      };
+
       let _init = () => {
         const gui = require('nw.gui');
-        const argv = gui.App.argv;
-        const inputPath = argv[argv.indexOf('-i') + 1];
+        const options = parseArgv(gui.App.argv);
+        const inputPath = options.i;
 
         if (!inputPath) {
           alert('Please give me an input path with -i\nInput file path is: ' + inputPath);
-          gui.App.quit();
+          // gui.App.quit();
         };
 
         const app = {
@@ -58,6 +72,9 @@
 
         app.UI.init(window);
         app.render();
+        if (options.w) {
+          app.toggleFilewatcher();
+        }
       };
       document.addEventListener('DOMContentLoaded', _init);
     </script>
