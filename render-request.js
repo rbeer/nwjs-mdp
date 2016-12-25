@@ -8,8 +8,11 @@ class RenderRequest {
     this.resolved = false;
     this.type = type;
     this.raw = this.type === 'raw';
-    this.inputFile = inputFile;
-    this.input = fs.readFileSync(inputFile);
+    this.input = {
+      path: inputFile,
+      content: fs.readFileSync(inputFile),
+      stat: fs.statSync(inputFile)
+    };
     this.compiled = '';
     this.compiledHTMLDocument = null;
     this.fileWatcher = null;
@@ -31,7 +34,7 @@ class RenderRequest {
     let options = {
       method: 'POST',
       uri: `https://api.github.com/markdown${this.raw ? '/raw' : ''}`,
-      body: this.input,
+      body: this.input.content,
       headers: {
         'content-type': this.raw ? 'text/x-markdown' : 'application/json',
         'User-Agent': 'nwjs-markdown-preview'
@@ -42,7 +45,7 @@ class RenderRequest {
   }
 
   startFileWatcher(handler) {
-    this.fileWatcher = fs.watch(this.inputFile, { persistent: false }, handler);
+    this.fileWatcher = fs.watch(this.input.path, { persistent: false }, handler);
   }
 
   stopFileWatcher() {
@@ -51,7 +54,18 @@ class RenderRequest {
   }
 
   updateInput() {
-    this.input = fs.readFileSync(this.inputFile);
+    return new Promise((resolve, reject) => {
+      let newStat = fs.statSync(this.input.path);
+      let same_mtime = newStat.mtime.getTime() === this.input.stat.mtime.getTime();
+      let sameSize = newStat.size === this.input.stat.size;
+      if (same_mtime || sameSize) {
+        return reject(new Error('File\'s content didn\'t change.'));
+      } else {
+        this.input.content = fs.readFileSync(this.input.path);
+        this.input.stat = newStat;
+        return resolve();
+      };
+    });
   }
 
 }

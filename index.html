@@ -31,18 +31,20 @@
             app.UI.flashContent();
           })
           .catch((err) => {
-            console.log(err)
+            console.log(err);
           })
           .finally(app.UI.toggleRequestAnimation);
         };
 
         app.toggleFilewatcher = () => {
-          console.log(request.fileWatcher);
           let state = request.fileWatcher ? false : true;
           if (state) {
             request.startFileWatcher((type, fileName) => {
-              request.updateInput();
-              app.render();
+              if (type === 'change') {
+                request.updateInput()
+                .then(app.render)
+                .catch((err) => {});
+              }
             });
           } else {
             request.stopFileWatcher();
