@@ -53,6 +53,12 @@ ui.toggleRequestAnimation = (start) => {
   document.querySelector('[data-refresh]').classList[start ? 'add' : 'remove']('fa-spin');
 };
 
+ui.toggleFilewatcher = (state) => {
+  let fwElement = document.querySelector('[data-filewatcher]');
+  fwElement.classList.add(state ? 'fa-chain' : 'fa-chain-broken');
+  fwElement.classList.remove(state ? 'fa-chain-broken' : 'fa-chain');
+};
+
 ui.flashContent = () => {
   let container = ui.contentElement.parentElement;
   container.addEventListener('animationend', (evt) => {

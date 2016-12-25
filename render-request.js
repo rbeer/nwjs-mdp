@@ -8,9 +8,11 @@ class RenderRequest {
     this.resolved = false;
     this.type = type;
     this.raw = this.type === 'raw';
+    this.inputFile = inputFile;
     this.input = fs.readFileSync(inputFile);
     this.compiled = '';
     this.compiledHTMLDocument = null;
+    this.fileWatcher = null;
   }
 
   compile() {
@@ -37,6 +39,19 @@ class RenderRequest {
     };
 
     return rp(options);
+  }
+
+  startFileWatcher(handler) {
+    this.fileWatcher = fs.watch(this.inputFile, { persistent: false }, handler);
+  }
+
+  stopFileWatcher() {
+    this.fileWatcher.close();
+    this.fileWatcher = null;
+  }
+
+  updateInput() {
+    this.input = fs.readFileSync(this.inputFile);
   }
 
 }

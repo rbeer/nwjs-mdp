@@ -17,14 +17,15 @@
           gui.App.quit();
         };
 
-        let app = {
+        const app = {
           UI: require('./ui.js'),
           RenderRequest: require('./render-request.js')
         };
 
+        const request = new app.RenderRequest(inputPath, 'raw');
+
         app.render = () => {
           app.UI.toggleRequestAnimation(true);
-          let request = new app.RenderRequest(inputPath, 'raw');
           request.compile().then((req) => {
             app.UI.setContent(req.compiledHTMLDocument);
             app.UI.flashContent();
@@ -33,6 +34,20 @@
             console.log(err)
           })
           .finally(app.UI.toggleRequestAnimation);
+        };
+
+        app.toggleFilewatcher = () => {
+          console.log(request.fileWatcher);
+          let state = request.fileWatcher ? false : true;
+          if (state) {
+            request.startFileWatcher((type, fileName) => {
+              request.updateInput();
+              app.render();
+            });
+          } else {
+            request.stopFileWatcher();
+          }
+          app.UI.toggleFilewatcher(state);
         };
 
         app.close = () => gui.App.quit();
@@ -49,6 +64,8 @@
     <titlebar>
       <i class="fa markdown-mark"></i>
       <i class="fa fa-pull-right fa-times" onclick="app.close();"></i>
+      <div class="divider-vertical"></div>
+      <i class="fa fa-pull-right fa-chain-broken" onclick="app.toggleFilewatcher();" data-filewatcher></i>
       <div class="divider-vertical"></div>
       <i class="fa fa-pull-right fa-refresh" onclick="app.render();" data-refresh></i>
     </titlebar>
