@@ -72,9 +72,11 @@ content  {
 ::-webkit-scrollbar {
   width: 7px;
   height: 7px;
-  background: rgba(99, 99, 99, 0.3);
 }
 
+::-webkit-scrollbar-thumb {
+  background: rgba(99, 99, 99, 0.3);
+};
 ::-webkit-scrollbar-thumb:vertical {
   border-radius: 15px;
 }
