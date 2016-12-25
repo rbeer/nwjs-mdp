@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>nwjs-markdown-preview</title>
+    <title>nwjs/m/p</title>
+    <link rel="stylesheet" type="text/css" href="./animations.css" />
     <link rel="stylesheet" type="text/css" href="./ui.css" />
     <link rel="stylesheet" type="text/css" href="./git-flavored.css" />
     <link rel="stylesheet" type="text/css" href="./lib/font-awesome/css/font-awesome.min.css" />
@@ -25,13 +26,14 @@
           let request = new app.RenderRequest(inputPath, 'raw');
           request.compile().then((req) => {
             app.UI.setContent(req.compiledHTMLDocument);
-            console.log(req);
+            app.UI.flashContent();
           })
           .catch((err) => {
             console.log(err)
           })
           .finally(app.UI.toggleRequestAnimation);
         };
+
         app.close = () => gui.App.quit();
 
         window.app = app;
@@ -44,7 +46,9 @@
   </head>
   <body>
     <titlebar>
+      <div class="titlebar-name">nwjs-m-p</div>
       <i class="fa fa-pull-right fa-times" onclick="app.close();"></i>
+      <div class="divider-vertical"></div>
       <i class="fa fa-pull-right fa-refresh" onclick="app.render();" data-refresh></i>
     </titlebar>
     <container>

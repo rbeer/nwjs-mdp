@@ -1,7 +1,9 @@
 'use strict';
 
 let document;
-let ui = {};
+let ui = {
+  contentElement: null
+};
 
 ui.setContent = (doc) => {
   ui.clearContent.call(ui.contentElement);
@@ -39,6 +41,14 @@ ui.initContextMenu = () => {
 ui.toggleRequestAnimation = (start) => {
   document.querySelector('[data-refresh]').classList[start ? 'add' : 'remove']('fa-spin');
 };
+
+ui.flashContent = () => {
+  let container = ui.contentElement.parentElement;
+  container.addEventListener('animationend', (evt) => {
+    container.classList.remove('update-flash');
+  });
+  container.classList.add('update-flash');
+}
 
 ui.initUI = () => {
   ui.contentElement = document.getElementsByTagName('content')[0];

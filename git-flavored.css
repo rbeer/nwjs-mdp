@@ -244,8 +244,7 @@ table tr:nth-child(2n) {
 img {
   max-width: 100%
 }
-</style>
-<style type="text/css">
+
 .highlight  { background: #ffffff; }
 .highlight .c { color: #999988; font-style: italic } /* Comment */
 .highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
