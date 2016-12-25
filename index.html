@@ -18,9 +18,10 @@
         };
 
         let app = {
-          UI: require('./ui.js')(document),
+          UI: require('./ui.js'),
           RenderRequest: require('./render-request.js')
         };
+
         app.render = () => {
           app.UI.toggleRequestAnimation(true);
           let request = new app.RenderRequest(inputPath, 'raw');
@@ -38,7 +39,7 @@
 
         window.app = app;
 
-        app.UI.initUI();
+        app.UI.init(window);
         app.render();
       };
       document.addEventListener('DOMContentLoaded', _init);

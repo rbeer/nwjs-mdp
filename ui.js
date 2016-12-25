@@ -1,6 +1,6 @@
 'use strict';
 
-let document;
+let window, document;
 let ui = {
   contentElement: null
 };
@@ -38,6 +38,17 @@ ui.initContextMenu = () => {
   }, false);
 };
 
+ui.controlKeysHandler = function(evt) {
+  if (!evt.ctrlKey) {
+    return true;
+  }
+  switch (evt.key) {
+    case 'q':
+      window.app.close();
+      break;
+  }
+};
+
 ui.toggleRequestAnimation = (start) => {
   document.querySelector('[data-refresh]').classList[start ? 'add' : 'remove']('fa-spin');
 };
@@ -50,12 +61,12 @@ ui.flashContent = () => {
   container.classList.add('update-flash');
 }
 
-ui.initUI = () => {
+ui.init = (ctxWnd) => {
+  window = ctxWnd;
+  document = window.document;
   ui.contentElement = document.getElementsByTagName('content')[0];
   ui.initContextMenu();
+  document.addEventListener('keyup', ui.controlKeysHandler);
 };
 
-module.exports = (ctxDoc) => {
-  document = ctxDoc;
-  return ui;
-};
+module.exports = ui;
