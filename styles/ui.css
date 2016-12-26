@@ -17,7 +17,7 @@ titlebar i.fa {
 }
 
 titlebar i.markdown-mark {
-  background: url('./img/markdown-preview-mark.svg');
+  background: url('../img/markdown-preview-mark.svg');
   background-size: contain;
   background-repeat: no-repeat;
   height: 18px;
