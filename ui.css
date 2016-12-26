@@ -17,13 +17,13 @@ titlebar i.fa {
 }
 
 titlebar i.markdown-mark {
-  -webkit-app-region: drag;
   background: url('./img/markdown-preview-mark.svg');
   background-size: contain;
-  height: 14px;
-  width: 31px;
+  background-repeat: no-repeat;
+  height: 18px;
+  width: 32px;
   margin-left: 7px;
-  margin-right: 0;
+  margin-top: 3px;
 }
 
 titlebar .divider-vertical {
