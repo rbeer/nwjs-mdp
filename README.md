@@ -5,7 +5,7 @@ The only markdown preview you need.
 
 - rendering in GitHub flavor markdown
 - most authentic HTML preview in real DOM
-- render on save
+- automatic re-render when input file is saved
 
 # CMD
 `nw mdP.nw -i ./README.md [-w true]`
