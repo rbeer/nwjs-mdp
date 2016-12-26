@@ -1,6 +1,7 @@
 titlebar {
+  -webkit-app-region: drag;
   overflow: hidden;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   height: 23px;
@@ -9,12 +10,14 @@ titlebar {
 }
 
 titlebar i.fa {
+  -webkit-app-region: no-drag;
   margin-right: 5px;
   margin-top: 5px;
   cursor: pointer;
 }
 
 titlebar i.markdown-mark {
+  -webkit-app-region: drag;
   background: url('../img/markdown-preview-mark.svg');
   background-size: contain;
   background-repeat: no-repeat;
@@ -35,12 +38,12 @@ titlebar .divider-vertical {
 
 container {
   float: left;
-  position: absolute;
+  position: fixed;
   top: 27px;
   bottom: 0;
+  left: 0;
+  right: 0;
   max-width: 980px;
-  width: 100%;
-  height: 500px;
 }
 
 container:after {
@@ -59,8 +62,10 @@ content  {
   overflow-wrap: break-word;
   padding: 7px 7px 7px 7px;
   overflow: auto;
-  width: 100%;
+  /* width: 100%; */
   height: 100%;
+  right: 0px;
+  left: 0;
 }
 
 ::-webkit-scrollbar {
