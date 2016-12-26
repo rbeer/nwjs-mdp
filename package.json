@@ -1,7 +1,10 @@
 {
-  "name": "nwjs-markdown-preview",
+  "name": "nwjs-mdp",
   "descitption": "Markdown Preview using NWJS",
-  "repository": "https://github.com/rbeer/nwjs-markdown-preview",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rbeer/nwjs-mdp.git"
+  },
   "author": "Raphael Beer <raphael.beer@protonmail.com>",
   "license": "MIT",
   "main": "index.html",
@@ -13,5 +16,21 @@
   "dependencies": {
     "request": "^2.79.0",
     "request-promise": "^4.1.1"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/rbeer/nwjs-mdp/issues"
+  },
+  "homepage": "https://github.com/rbeer/nwjs-mdp#readme",
+  "version": "0.0.9",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "NWjs",
+    "markdown",
+    "preview",
+    "git",
+    "flavored"
+  ]
 }
