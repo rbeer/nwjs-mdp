@@ -1,5 +1,5 @@
 ![](./img/markdown-preview-mark.svg)
-# [.mdP] |nwjs-markdown-preview
+# nwjs-markdown-preview
 
 The only markdown preview you need.
 
@@ -7,22 +7,29 @@ The only markdown preview you need.
 - most authentic HTML preview in real DOM
 - automatic re-render when input file is saved
 
-# CMD
-`nw mdP.nw -i ./README.md [-w true]`
+# USAGE
+`nw mdp.nw -i ./README.md [-w true]`
 - -_i_ \</path/to/input.md\>
 - \[-_w_ \<false|(default)true\>\] - attach file watcher at app startup
 
 # UI
+## Toolbar
+# ![](./img/chain.png) | ![](./img/chain-broken.png)
+Disable/Enable watching the content of the input file, auto-refreshing when it changes.
+Enabled by default, which can be overriden with `-w false`.
 
-
-
-_filewatcherIconOn_
 -
 
-_refreshIcon_
--
-Click icon to refresh. Doing work if _refreshIconSpinning_
+# ![](./img/refresh.png) | ![](./img/refresh-spin.gif)
+You can manually refresh the output by clicking this icon.
+The icon is spinning, when a document is being rendered.
 
-_closeIcon_
 -
-Click icon to close app
+
+# ![](./img/times.png)
+Closes the App.
+
+## Smiley Support
+Supports all smileys, available on GitHub.
+
+:1st_place_medal: :a: :aries: :smirk:

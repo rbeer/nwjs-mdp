@@ -24,17 +24,23 @@ class RenderRequest {
       .then((compiled) => {
         let domParser = new DOMParser();
         _self.resolved = true;
-        _self.compiled = compiled;
+        _self.compiled = RenderRequest.upgradeSmileys(`${compiled}`);
         _self.compiledHTMLDocument = domParser.parseFromString(_self.compiled, 'text/html');
         return _self;
       });
+  }
+
+  static upgradeSmileys(htmlSrc) {
+    let emojiRX = /<g-emoji alias="(.*?)" fallback-src="(.*?)".*?>(.*?)<\/g-emoji>/g
+    let replacement = '<img class="img-emoji" src="$2" alt=":$1}: | $3}" />';
+    return htmlSrc.replace(emojiRX, replacement);
   }
 
   requestFromGitHub() {
     let options = {
       method: 'POST',
       uri: `https://api.github.com/markdown${this.raw ? '/raw' : ''}`,
-      body: this.input.content,
+      body: this.raw ? this.input.content : JSON.stringify({ text: this.input.content, mode: this.type || 'markdown' }),
       headers: {
         'content-type': this.raw ? 'text/x-markdown' : 'application/json',
         'User-Agent': 'nwjs-markdown-preview'

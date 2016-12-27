@@ -68,6 +68,12 @@ content  {
   left: 0;
 }
 
+.img-emoji {
+  display: inline-block;
+  height: 24px;
+  width: 24px;
+}
+
 rawmodal {
   pointer-events: none;
   position: absolute;

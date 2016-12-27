@@ -27,8 +27,8 @@
         const inputPath = options.i;
 
         if (!inputPath) {
-          alert('Please give me an input path with -i\nInput file path is: ' + inputPath);
-          // gui.App.quit();
+          alert(`Can't read from ${inputPath}.`);
+          inputPath = './README.md';
         };
 
         const app = {
