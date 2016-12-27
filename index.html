@@ -73,6 +73,7 @@
         app.close = () => gui.App.quit();
 
         window.app = app;
+        window.clipboard = gui.Clipboard.get();
 
         app.UI.init(window);
         app.render();
@@ -98,6 +99,7 @@
       </content>
       <rawmodal>
         <textarea id="compiled_raw" readonly></textarea>
+        <button class="copy-raw"><i class="fa fa-copy"></i></button>
       </rawmodal>
     </container>
   </body>

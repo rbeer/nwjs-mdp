@@ -90,7 +90,6 @@ rawmodal[data-open] {
   opacity: 1;
 }
 
-
 #compiled_raw {
   position: relative;
   width: 100%;
@@ -98,6 +97,35 @@ rawmodal[data-open] {
   padding: 0px;
   border-radius: 2px;
   resize: none;
+}
+
+.copy-raw {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: #aaa;
+  color: #fff;
+  border-top-left-radius: 2px;
+  border-bottom-right-radius: 2px;
+  border: #aaa 1px solid;
+  width: 48px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  cursor: pointer;
+}
+
+.copy-raw:active, .copy-raw:focus {
+  outline: none !important;
+}
+ .copy-raw:active {
+  box-shadow: none !important;
+}
+.copy-raw:hover {
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+.copy-raw i {
+  pointer-events: none;
 }
 
 ::-webkit-scrollbar {

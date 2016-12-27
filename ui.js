@@ -6,6 +6,10 @@ let ui = {
   modalListeners: {
     mousedown: (evt) => {
       if (evt.target.id !== 'compiled_raw') {
+        if (evt.target.classList.contains('copy-raw')) {
+          console.log(window.clipboard);
+          return window.clipboard.set(document.getElementById('compiled_raw').value);
+        }
         ui.hideRawModal();
       }
       return true;
