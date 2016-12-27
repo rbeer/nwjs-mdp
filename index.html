@@ -66,6 +66,28 @@
           app.UI.toggleFilewatcher(state);
         };
 
+        app.showRawModal = () => {
+          let rawModal = document.getElementsByTagName('rawmodal')[0];
+          let listener;
+
+          rawModal.querySelector('#compiled_raw').value = request.compiled;
+
+          listener = document.addEventListener('mousedown', (evt) => {
+            if (evt.target.id !== 'compiled_raw') {
+              app.hideRawModal();
+              document.removeEventListener('mousedown', listener);
+            }
+            return true;
+          })
+
+          rawModal.dataset.open = true;
+
+        };
+
+        app.hideRawModal = () => {
+          delete document.getElementsByTagName('rawmodal')[0].dataset.open;
+        };
+
         app.close = () => gui.App.quit();
 
         window.app = app;
@@ -86,11 +108,15 @@
       <div class="divider-vertical"></div>
       <i class="fa fa-pull-right fa-chain-broken" onclick="app.toggleFilewatcher();" data-filewatcher></i>
       <div class="divider-vertical"></div>
+      <i class="fa fa-pull-right fa-hashtag" onclick="app.showRawModal();"></i>
       <i class="fa fa-pull-right fa-refresh" onclick="app.render();" data-refresh></i>
     </titlebar>
     <container>
       <content>
       </content>
+      <rawmodal>
+        <textarea id="compiled_raw" resizable="false"></textarea>
+      </rawmodal>
     </container>
   </body>
 </html>
