@@ -97,6 +97,7 @@ rawmodal[data-open] {
   height: 100%;
   padding: 0px;
   border-radius: 2px;
+  resize: none;
 }
 
 ::-webkit-scrollbar {
