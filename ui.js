@@ -2,7 +2,22 @@
 
 let window, document;
 let ui = {
-  contentElement: null
+  contentElement: null,
+  modalListeners: {
+    mousedown: (evt) => {
+      if (evt.target.id !== 'compiled_raw') {
+        ui.hideRawModal();
+      }
+      return true;
+    },
+    keydown: (evt) => {
+      console.log(evt);
+      if (evt.key === 'Escape') {
+        ui.hideRawModal();
+      }
+      return true;
+    }
+  }
 };
 
 ui.setContent = (doc) => {
@@ -65,7 +80,33 @@ ui.flashContent = () => {
     container.classList.remove('update-flash');
   });
   container.classList.add('update-flash');
-}
+};
+
+let _removeModalListeners = () => {
+  for (let event in ui.modalListeners) {
+    document.removeEventListener(event, ui.modalListeners[event]);
+  }
+};
+
+let _addModalListeners = () => {
+  for (let event in ui.modalListeners) {
+    document.addEventListener(event, ui.modalListeners[event]);
+  }
+};
+
+ui.showRawModal = (compiled) => {
+  let rawModal = document.getElementsByTagName('rawmodal')[0];
+
+  rawModal.querySelector('#compiled_raw').value = compiled;
+  _addModalListeners();
+  rawModal.dataset.open = true;
+
+};
+
+ui.hideRawModal = () => {
+  _removeModalListeners();
+  delete document.getElementsByTagName('rawmodal')[0].dataset.open;
+};
 
 ui.init = (ctxWnd) => {
   window = ctxWnd;

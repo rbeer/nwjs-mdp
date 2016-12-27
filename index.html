@@ -67,25 +67,7 @@
         };
 
         app.showRawModal = () => {
-          let rawModal = document.getElementsByTagName('rawmodal')[0];
-          let listener;
-
-          rawModal.querySelector('#compiled_raw').value = request.compiled;
-
-          listener = document.addEventListener('mousedown', (evt) => {
-            if (evt.target.id !== 'compiled_raw') {
-              app.hideRawModal();
-              document.removeEventListener('mousedown', listener);
-            }
-            return true;
-          })
-
-          rawModal.dataset.open = true;
-
-        };
-
-        app.hideRawModal = () => {
-          delete document.getElementsByTagName('rawmodal')[0].dataset.open;
+          app.UI.showRawModal(request.compiled);
         };
 
         app.close = () => gui.App.quit();
