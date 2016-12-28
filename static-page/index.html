@@ -7,6 +7,7 @@
 
   <title>[.mdP]</title>
 
+  <link rel="stylesheet" type="text/css" href="./styles/git-flavored.css">
   <link rel="stylesheet" type="text/css" href="./styles/ui.css">
   <link rel="stylesheet" type="text/css" href="./lib/font-awesome/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
@@ -42,8 +43,90 @@
             <i class="fa fa-pull-right fa-refresh" onclick="app.render();" data-refresh></i>
           </titlebar>
           <container>
-            <content>test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />
-            </content>
+            <content><p><a href="./img/markdown-preview-mark.svg" target="_blank"><img src="./img/markdown-preview-mark.svg" alt="" style="max-width:100%;"></a></p>
+
+<h1>
+<a id="user-content-nwjs-markdown-preview" class="anchor" href="#nwjs-markdown-preview" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>nwjs-markdown-preview</h1>
+
+<p><a href="https://foo.bar/">Download latest (foo)</a></p>
+
+<h3>
+<a id="user-content-renders-github-flavored-markdown" class="anchor" href="#renders-github-flavored-markdown" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Renders GitHub Flavored Markdown</h3>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">const</span> <span class="pl-c1">examples</span> <span class="pl-k">=</span> {
+  active<span class="pl-k">:</span> [ <span class="pl-s"><span class="pl-pds">'</span>codeblocks<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>Strikethrough<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>Tables<span class="pl-pds">'</span></span> ],
+  syntaxHighlighting<span class="pl-k">:</span> <span class="pl-c1">true</span>
+};</pre></div>
+
+<table>
+<thead>
+<tr>
+<th>ToDo</th>
+<th>Done</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><del>write README.md</del></td>
+<td>X</td>
+</tr>
+<tr>
+<td>have me some pizza</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+<h3>
+<a id="user-content-displays-images-for-gfm-smiley-tags" class="anchor" href="#displays-images-for-gfm-smiley-tags" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Displays images for GFM <code>:smiley:</code> tags</h3>
+
+<p><img class="img-emoji" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f947.png" alt=":1st_place_medal}: | 🥇}" /> <img class="img-emoji" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f170.png" alt=":a}: | 🅰️}" /> <img class="img-emoji" src="https://assets-cdn.github.com/images/icons/emoji/unicode/2648.png" alt=":aries}: | ♈️}" /> <img class="img-emoji" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f60f.png" alt=":smirk}: | 😏}" /></p>
+
+<h1>
+<a id="user-content-usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>USAGE</h1>
+
+<p><code>nw mdp.nw -i ./README.md [-w true]</code></p>
+
+<ul>
+<li>-<em>i</em> &lt;/path/to/input.md&gt;</li>
+<li>[-<em>w</em> &lt;false|(default)true&gt;] - attach file watcher at app startup</li>
+</ul>
+
+<h1>
+<a id="user-content-toolbar" class="anchor" href="#toolbar" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Toolbar</h1>
+
+<h1>
+<a id="user-content---" class="anchor" href="#--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="./img/refresh.png" target="_blank"><img src="./img/refresh.png" alt="" style="max-width:100%;"></a> | <a href="./img/refresh-spin.gif" target="_blank"><img src="./img/refresh-spin.gif" alt="" style="max-width:100%;"></a>
+</h1>
+
+<p>You can manually refresh the output by clicking this icon.
+The icon is spinning, when a document is being rendered.</p>
+
+<h2></h2>
+
+<h1>
+<a id="user-content--1" class="anchor" href="#-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="./img/hashtag.png" target="_blank"><img src="./img/hashtag.png" alt="" style="max-width:100%;"></a>
+</h1>
+
+<p>Shows the ouput HTML source.</p>
+
+<h2></h2>
+
+<h1>
+<a id="user-content----1" class="anchor" href="#---1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="./img/chain.png" target="_blank"><img src="./img/chain.png" alt="" style="max-width:100%;"></a> | <a href="./img/chain-broken.png" target="_blank"><img src="./img/chain-broken.png" alt="" style="max-width:100%;"></a>
+</h1>
+
+<p>Disable/Enable watching the content of the input file, auto-refreshing when it changes.
+Enabled by default, which can be overriden with <code>-w false</code>.</p>
+
+<h2></h2>
+
+<h1>
+<a id="user-content--4" class="anchor" href="#-4" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="./img/times.png" target="_blank"><img src="./img/times.png" alt="" style="max-width:100%;"></a>
+</h1>
+
+<p>Closes the App.</p>
+</content>
           </container>
         </div>
       </div>
