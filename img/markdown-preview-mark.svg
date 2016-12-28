@@ -77,13 +77,13 @@
      inkscape:window-height="1003"
      id="namedview8"
      showgrid="false"
-     inkscape:zoom="1.1082539"
-     inkscape:cx="391.54646"
-     inkscape:cy="-44.759048"
+     inkscape:zoom="4.4330156"
+     inkscape:cx="146.44893"
+     inkscape:cy="59.889299"
      inkscape:window-x="-4"
      inkscape:window-y="-4"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g3356"
+     inkscape:current-layer="text3352"
      showguides="true"
      inkscape:guide-bbox="true" />
   <rect
@@ -106,18 +106,14 @@
        id="flowRoot3371"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:72.5px;line-height:125%;font-family:'Segoe Script';-inkscape-font-specification:'Segoe Script Bold';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        transform="matrix(1.184169,0,0,1.184169,-11.62992,-19.524587)">
-      <text
-         sodipodi:linespacing="125%"
-         id="text3352"
-         y="100.48629"
-         x="135.71025"
+      <g
          style="font-style:normal;font-weight:normal;font-size:33.77896118px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         xml:space="preserve"><tspan
+         id="text3352">
+        <path
+           d="m 186.76836,58.551225 q 0,7.267507 -2.93793,11.195054 -2.907,3.896621 -7.54584,5.164569 -4.60791,1.267948 -10.94765,1.267948 l -12.15375,0 0,24.307494 -13.42169,0 0,-59.036903 27.12172,0 q 9.30859,0 14.50409,3.741994 5.19549,3.741993 5.38105,13.359844 z m -12.67948,-0.371107 q -0.0928,-4.484207 -2.50497,-6.927327 -2.38127,-2.443119 -6.24697,-2.443119 l -12.15375,0 0,20.132542 11.78264,0 q 4.51514,0 6.80363,-2.319417 2.31942,-2.319417 2.31942,-8.442679 z"
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:126.67111206px;font-family:LilyUPC;-inkscape-font-specification:LilyUPC"
-           y="100.48629"
-           x="135.71025"
-           id="tspan3354"
-           sodipodi:role="line">P</tspan></text>
+           id="path3346" />
+      </g>
     </g>
     <circle
        r="6.3162422"
