@@ -19,23 +19,29 @@
 
 </head>
 <body>
-<a href="https://github.com/rbeer/nwjs-markdown-preview"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+  <!-- "Fork me on Github" -->
+  <a href="https://github.com/rbeer/nwjs-markdown-preview"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+  <!-- -->
   <div class="container">
+    <!-- logo -->
     <div class="row">
       <div class="col-lg-12 logo">
         <img class="img" src="./img/markdown-preview-mark.svg" />
       </div>
     </div>
+    <!-- sub title -->
     <div class="row">
       <div class="col-lg-12 text-lg-center">
         <span class="sub-title">What you see is what you get. Period.</span>
       </div>
     </div>
+    <!-- mdP window -->
     <div class="row">
       <div class="col-lg-10 offset-lg-1">
         <div class="mdp-window">
           <titlebar>
-            <i class="fa markdown-mark"></i>
+            <i class="fa fa-pull-left markdown-mark"></i>
+            <div class="fa-pull-left filename">./README.md</div>
             <i class="fa fa-pull-right fa-times" onclick="app.close();"></i>
             <div class="divider-vertical"></div>
             <i class="fa fa-pull-right fa-chain-broken" onclick="app.toggleFilewatcher();" data-filewatcher></i>
@@ -44,90 +50,91 @@
             <i class="fa fa-pull-right fa-refresh" onclick="app.render();" data-refresh></i>
           </titlebar>
           <container>
-            <content><p><a href="./img/markdown-preview-mark.svg" target="_blank"><img src="./img/markdown-preview-mark.svg" alt="" style="max-width:100%;"></a></p>
+            <content>
+              <p><a href="./img/markdown-preview-mark.svg" target="_blank"><img src="./img/markdown-preview-mark.svg" alt="" style="max-width:100%;"></a></p>
 
-<h1>
-<a id="user-content-nwjs-markdown-preview" class="anchor" href="#nwjs-markdown-preview" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>nwjs-markdown-preview</h1>
+              <h1>
+              <a id="user-content-nwjs-markdown-preview" class="anchor" href="#nwjs-markdown-preview" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>nwjs-markdown-preview</h1>
 
-<p><a href="https://foo.bar/">Download latest (foo)</a></p>
+              <p><a href="https://foo.bar/">Download latest (foo)</a></p>
 
-<h3>
-<a id="user-content-renders-github-flavored-markdown" class="anchor" href="#renders-github-flavored-markdown" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Renders GitHub Flavored Markdown</h3>
+              <h3>
+              <a id="user-content-renders-github-flavored-markdown" class="anchor" href="#renders-github-flavored-markdown" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Renders GitHub Flavored Markdown</h3>
 
-<div class="highlight highlight-source-js"><pre><span class="pl-k">const</span> <span class="pl-c1">examples</span> <span class="pl-k">=</span> {
-  active<span class="pl-k">:</span> [ <span class="pl-s"><span class="pl-pds">'</span>codeblocks<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>Strikethrough<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>Tables<span class="pl-pds">'</span></span> ],
-  syntaxHighlighting<span class="pl-k">:</span> <span class="pl-c1">true</span>
-};</pre></div>
+              <div class="highlight highlight-source-js"><pre><span class="pl-k">const</span> <span class="pl-c1">examples</span> <span class="pl-k">=</span> {
+                active<span class="pl-k">:</span> [ <span class="pl-s"><span class="pl-pds">'</span>codeblocks<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>Strikethrough<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>Tables<span class="pl-pds">'</span></span> ],
+                syntaxHighlighting<span class="pl-k">:</span> <span class="pl-c1">true</span>
+              };</pre></div>
 
-<table>
-<thead>
-<tr>
-<th>ToDo</th>
-<th>Done</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><del>write README.md</del></td>
-<td>X</td>
-</tr>
-<tr>
-<td>have me some pizza</td>
-<td></td>
-</tr>
-</tbody>
-</table>
+              <table>
+              <thead>
+              <tr>
+              <th>ToDo</th>
+              <th>Done</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+              <td><del>write README.md</del></td>
+              <td>X</td>
+              </tr>
+              <tr>
+              <td>have me some pizza</td>
+              <td></td>
+              </tr>
+              </tbody>
+              </table>
 
-<h3>
-<a id="user-content-displays-images-for-gfm-smiley-tags" class="anchor" href="#displays-images-for-gfm-smiley-tags" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Displays images for GFM <code>:smiley:</code> tags</h3>
+              <h3>
+              <a id="user-content-displays-images-for-gfm-smiley-tags" class="anchor" href="#displays-images-for-gfm-smiley-tags" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Displays images for GFM <code>:smiley:</code> tags</h3>
 
-<p><img class="img-emoji" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f947.png" alt=":1st_place_medal}: | 🥇}" /> <img class="img-emoji" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f170.png" alt=":a}: | 🅰️}" /> <img class="img-emoji" src="https://assets-cdn.github.com/images/icons/emoji/unicode/2648.png" alt=":aries}: | ♈️}" /> <img class="img-emoji" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f60f.png" alt=":smirk}: | 😏}" /></p>
+              <p><img class="img-emoji" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f947.png" alt=":1st_place_medal}: | 🥇}" /> <img class="img-emoji" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f170.png" alt=":a}: | 🅰️}" /> <img class="img-emoji" src="https://assets-cdn.github.com/images/icons/emoji/unicode/2648.png" alt=":aries}: | ♈️}" /> <img class="img-emoji" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f60f.png" alt=":smirk}: | 😏}" /></p>
 
-<h1>
-<a id="user-content-usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>USAGE</h1>
+              <h1>
+              <a id="user-content-usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>USAGE</h1>
 
-<p><code>nw mdp.nw -i ./README.md [-w true]</code></p>
+              <p><code>nw mdp.nw -i ./README.md [-w true]</code></p>
 
-<ul>
-<li>-<em>i</em> &lt;/path/to/input.md&gt;</li>
-<li>[-<em>w</em> &lt;false|(default)true&gt;] - attach file watcher at app startup</li>
-</ul>
+              <ul>
+              <li>-<em>i</em> &lt;/path/to/input.md&gt;</li>
+              <li>[-<em>w</em> &lt;false|(default)true&gt;] - attach file watcher at app startup</li>
+              </ul>
 
-<h1>
-<a id="user-content-toolbar" class="anchor" href="#toolbar" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Toolbar</h1>
+              <h1>
+              <a id="user-content-toolbar" class="anchor" href="#toolbar" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Toolbar</h1>
 
-<h1>
-<a id="user-content---" class="anchor" href="#--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="./img/refresh.png" target="_blank"><img src="./img/refresh.png" alt="" style="max-width:100%;"></a> | <a href="./img/refresh-spin.gif" target="_blank"><img src="./img/refresh-spin.gif" alt="" style="max-width:100%;"></a>
-</h1>
+              <h1>
+              <a id="user-content---" class="anchor" href="#--" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="./img/refresh.png" target="_blank"><img src="./img/refresh.png" alt="" style="max-width:100%;"></a> | <a href="./img/refresh-spin.gif" target="_blank"><img src="./img/refresh-spin.gif" alt="" style="max-width:100%;"></a>
+              </h1>
 
-<p>You can manually refresh the output by clicking this icon.
-The icon is spinning, when a document is being rendered.</p>
+              <p>You can manually refresh the output by clicking this icon.
+              The icon is spinning, when a document is being rendered.</p>
 
-<h2></h2>
+              <h2></h2>
 
-<h1>
-<a id="user-content--1" class="anchor" href="#-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="./img/hashtag.png" target="_blank"><img src="./img/hashtag.png" alt="" style="max-width:100%;"></a>
-</h1>
+              <h1>
+              <a id="user-content--1" class="anchor" href="#-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="./img/hashtag.png" target="_blank"><img src="./img/hashtag.png" alt="" style="max-width:100%;"></a>
+              </h1>
 
-<p>Shows the ouput HTML source.</p>
+              <p>Shows the ouput HTML source.</p>
 
-<h2></h2>
+              <h2></h2>
 
-<h1>
-<a id="user-content----1" class="anchor" href="#---1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="./img/chain.png" target="_blank"><img src="./img/chain.png" alt="" style="max-width:100%;"></a> | <a href="./img/chain-broken.png" target="_blank"><img src="./img/chain-broken.png" alt="" style="max-width:100%;"></a>
-</h1>
+              <h1>
+              <a id="user-content----1" class="anchor" href="#---1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="./img/chain.png" target="_blank"><img src="./img/chain.png" alt="" style="max-width:100%;"></a> | <a href="./img/chain-broken.png" target="_blank"><img src="./img/chain-broken.png" alt="" style="max-width:100%;"></a>
+              </h1>
 
-<p>Disable/Enable watching the content of the input file, auto-refreshing when it changes.
-Enabled by default, which can be overriden with <code>-w false</code>.</p>
+              <p>Disable/Enable watching the content of the input file, auto-refreshing when it changes.
+              Enabled by default, which can be overriden with <code>-w false</code>.</p>
 
-<h2></h2>
+              <h2></h2>
 
-<h1>
-<a id="user-content--4" class="anchor" href="#-4" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="./img/times.png" target="_blank"><img src="./img/times.png" alt="" style="max-width:100%;"></a>
-</h1>
+              <h1>
+              <a id="user-content--4" class="anchor" href="#-4" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="./img/times.png" target="_blank"><img src="./img/times.png" alt="" style="max-width:100%;"></a>
+              </h1>
 
-<p>Closes the App.</p>
-</content>
+              <p>Closes the App.</p>
+            </content>
           </container>
         </div>
       </div>

@@ -64,6 +64,12 @@ titlebar .divider-vertical {
   position: relative;
 }
 
+titlebar .filename {
+  display: inline-block;
+  font-size: 10px;
+  margin-top: 5px;
+}
+
 container {
   float: left;
   position: absolute;
