@@ -67,6 +67,7 @@ let _init = () => {
   window.clipboard = gui.Clipboard.get();
 
   app.UI.init(window);
+  app.UI.setFileNameTitle(inputPath);
   app.render();
   if (options.w) {
     app.toggleFilewatcher();
