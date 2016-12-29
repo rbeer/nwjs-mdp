@@ -1,7 +1,8 @@
 ![](./img/markdown-preview-mark.svg)
 # nwjs-markdown-preview
 
-[Download latest (foo)](https://foo.bar/)
+### Download
+[Just GitHub, for now](https://github.com/rbeer/nwjs-mdp.git)
 
 ### Renders GitHub Flavored Markdown
 
