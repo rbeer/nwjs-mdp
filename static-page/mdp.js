@@ -34,6 +34,12 @@
         prefix: './'
       }
     }
+  }
+
+
+  mdP.setTitleFileName = () => {
+    let $fnElement = $('.filename');
+    $fnElement.text(mdP.probeForOS().prefix + 'README.md');
   };
 
   mdP.probeForOS = () => {
@@ -46,13 +52,17 @@
     return os.unknown;
   };
 
-  mdP.setTitleFileName = () => {
-    let $fnElement = $('.filename');
-    $fnElement.text(mdP.probeForOS().prefix + 'README.md');
+  let _scrollToTarget = (target) => {
+    let $content = $('content');
+    let $scrollTarget = $(`[href="${target.dataset.targetHref}"`);
+    let scrollTo = $content.scrollTop() + $scrollTarget.offset().top;
+    $('content').stop().animate({
+        scrollTop: scrollTo - 300
+    }, 1000);
   };
 
-  mdP.toolbarClickHandler = (evt) => {
-
+  mdP.highlight = (target) => {
+    _scrollToTarget(target);
   };
 
   window.mdP = mdP;

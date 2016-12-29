@@ -31,12 +31,6 @@
     <div class="row">
       <div class="col-lg-12 logo">
         <img class="img" src="./img/markdown-preview-mark.svg" />
-        <div class="c-slack">
-          <div class="c-slack__dot c-slack__dot--a"></div>
-          <div class="c-slack__dot c-slack__dot--b"></div>
-          <div class="c-slack__dot c-slack__dot--c"></div>
-          <div class="c-slack__dot c-slack__dot--d"></div>
-        </div>
       </div>
     </div>
     <!-- sub title -->
@@ -50,17 +44,18 @@
       <div class="col-lg-10 offset-lg-1">
         <div class="mdp-window">
           <titlebar>
-            <i class="fa fa-pull-left markdown-mark"></i>
+            <i class="fa fa-pull-left markdown-mark" onclick="mdP.highlight(this);" data-target-href="#top"></i>
             <div class="fa-pull-left filename">/opt/nwjs-mdp/README.md</div>
-            <i class="fa fa-pull-right fa-times" onclick="app.close();"></i>
+            <i class="fa fa-pull-right fa-times" onclick="mdP.highlight(this);" data-target-href="#-4"></i>
             <div class="divider-vertical"></div>
-            <i class="fa fa-pull-right fa-chain-broken" onclick="app.toggleFilewatcher();" data-filewatcher></i>
+            <i class="fa fa-pull-right fa-chain-broken" onclick="mdP.highlight(this);" data-target-href="#---1" data-filewatcher></i>
             <div class="divider-vertical"></div>
-            <i class="fa fa-pull-right fa-hashtag" data-refresh></i>
-            <i class="fa fa-pull-right fa-refresh" onclick="app.render();" data-refresh></i>
+            <i class="fa fa-pull-right fa-hashtag" onclick="mdP.highlight(this);" data-target-href="#-1"></i>
+            <i class="fa fa-pull-right fa-refresh" onclick="mdP.highlight(this);" data-target-href="#--" data-refresh></i>
           </titlebar>
           <container>
             <content>
+              <a id="anchor-top" class="anchor" href="#top" aria-hidden="true"></a>
               <p><a href="./img/markdown-preview-mark.svg" target="_blank"><img src="./img/markdown-preview-mark.svg" alt="" style="max-width:100%;"></a></p>
 
               <h1>
