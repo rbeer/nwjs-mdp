@@ -1,0 +1,81 @@
+/* -----------------------------------------------------------------------------
+  SLACK LOGO COMPONENT
+
+----------------------------------------------------------------------------- */
+/**
+ * Slack logo parent class.
+ *
+ * This class houses everything, all the dots, etc. Everything that exists for
+ * the logo is relative to this container.
+ */
+.c-slack {
+  position: relative;
+  z-index: 100;
+  margin: 80px auto;
+  width: 96px;
+  height: 96px;
+  -webkit-transform: rotate(-15deg) translateZ(0);
+          transform: rotate(-15deg) translateZ(0);
+}
+
+/**
+ * Slack dots.
+ *
+ * Slack dots are the actual dots that move around and expand. Each of them
+ * are a different colour, and also need to be positioned in different parts
+ * of the container. Each also have different animations due to position. The
+ * modifiers takes care of all these.
+ */
+.c-slack__dot {
+  display: block;
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  mix-blend-mode: multiply;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.c-slack__dot--a {
+  top: 0;
+  left: 0;
+  bottom: auto;
+  height: 96px;
+  background-color: #3eb991;
+  -webkit-transform: translateX(18px);
+      -ms-transform: translateX(18px);
+          transform: translateX(18px);
+}
+
+.c-slack__dot--b {
+  top: 0;
+  right: 0;
+  left: auto;
+  width: 96px;
+  background-color: #6ecadc;
+  -webkit-transform: translateY(18px);
+      -ms-transform: translateY(18px);
+          transform: translateY(18px);
+}
+
+.c-slack__dot--c {
+  bottom: 0;
+  right: 0;
+  top: auto;
+  height: 96px;
+  background-color: #e9a820;
+  -webkit-transform: translateX(-18px);
+      -ms-transform: translateX(-18px);
+          transform: translateX(-18px);
+}
+
+.c-slack__dot--d {
+  bottom: 0;
+  left: 0;
+  right: auto;
+  width: 96px;
+  background-color: #e01563;
+  -webkit-transform: translateY(-18px);
+      -ms-transform: translateY(-18px);
+          transform: translateY(-18px);
+}
