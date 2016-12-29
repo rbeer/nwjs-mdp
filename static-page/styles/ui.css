@@ -30,13 +30,15 @@ div.container {
 }
 
 [data-focused] {
-  transition: all 1s ease-out;
+  transition: all 0.3s ease-out;
   padding: 5px;
 }
 
 [data-focused=true] {
-  box-shadow: 0 1px 1px #2196F3, 0 1px 1px #3F51B5;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  /*box-shadow: 0 1px 1px #2196F3, 0 1px 1px #3F51B5;*/
   padding: 5px;
+  border: #aaa 1px solid;
 }
 
 titlebar {

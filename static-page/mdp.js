@@ -52,9 +52,18 @@
     return os.unknown;
   };
 
-  let _scrollToTarget = ($target) => {
+  let _scrollToTarget = ($target, isTop) => {
     let $content = $('content');
-    let scrollTo = $content.scrollTop() - $content.offset().top + $target.offset().top;
+
+    /**
+    * @TODO - Something's up with the formula. scrolling to #top scrolls in place
+    */
+
+    let scrollTo = isTop ? 0 : $content.scrollTop() - $content.offset().top + $target.offset().top;
+    /*console.log('content-scroll-top:', $content.scrollTop());
+    console.log('- content-top:', $content.offset().top);
+    console.log('+ target-top:', $target.offset().top);
+    console.log('= scrollTo:', scrollTo);*/
     $content.stop().animate({
         scrollTop: scrollTo
     }, 1000);
@@ -62,13 +71,15 @@
 
   mdP.highlight = (trigger) => {
     let $target = $(`[href="${trigger.dataset.targetHref}"`).parent();
-    let $siblings = $target.nextUntil('h1', '[data-focused]');
     $('[data-focused="true"]').each((idx, el) => {
       el.dataset.focused = false;
     });
-    _scrollToTarget($target);
-    $target.attr('data-focused', true);
-    $siblings.attr('data-focused', true);
+    _scrollToTarget($target, trigger.dataset.targetHref === '#top');
+    if (trigger.dataset.targetHref !== '#top') {
+      let $siblings = $target.nextUntil('h1', '[data-focused]');
+      $target.attr('data-focused', true);
+      $siblings.attr('data-focused', true);
+    }
   };
 
   window.mdP = mdP;
