@@ -29,6 +29,16 @@ div.container {
   width: 24px;
 }
 
+[data-focused] {
+  transition: all 1s ease-out;
+  padding: 5px;
+}
+
+[data-focused=true] {
+  box-shadow: 0 1px 1px #2196F3, 0 1px 1px #3F51B5;
+  padding: 5px;
+}
+
 titlebar {
   overflow: hidden;
   position: absolute;

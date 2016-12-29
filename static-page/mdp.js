@@ -52,17 +52,23 @@
     return os.unknown;
   };
 
-  let _scrollToTarget = (target) => {
+  let _scrollToTarget = ($target) => {
     let $content = $('content');
-    let $scrollTarget = $(`[href="${target.dataset.targetHref}"`);
-    let scrollTo = $content.scrollTop() + $scrollTarget.offset().top;
-    $('content').stop().animate({
-        scrollTop: scrollTo - 300
+    let scrollTo = $content.scrollTop() - $content.offset().top + $target.offset().top;
+    $content.stop().animate({
+        scrollTop: scrollTo
     }, 1000);
   };
 
-  mdP.highlight = (target) => {
-    _scrollToTarget(target);
+  mdP.highlight = (trigger) => {
+    let $target = $(`[href="${trigger.dataset.targetHref}"`).parent();
+    let $siblings = $target.nextUntil('h1', '[data-focused]');
+    $('[data-focused="true"]').each((idx, el) => {
+      el.dataset.focused = false;
+    });
+    _scrollToTarget($target);
+    $target.attr('data-focused', true);
+    $siblings.attr('data-focused', true);
   };
 
   window.mdP = mdP;
