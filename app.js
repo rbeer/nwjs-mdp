@@ -57,8 +57,8 @@ let _init = () => {
     app.UI.toggleFilewatcher(state);
   };
 
-  app.showRawModal = () => {
-    app.UI.showRawModal(request.compiled);
+  app.toggleRawModal = () => {
+    app.UI.toggleRawModal(request.compiled);
   };
 
   app.close = () => gui.App.quit();
