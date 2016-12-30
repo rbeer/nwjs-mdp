@@ -15,10 +15,10 @@ let parseArgv = (args) => {
 let _init = () => {
   const gui = require('nw.gui');
   const options = parseArgv(gui.App.argv);
-  const inputPath = options.i;
+  let inputPath = options.i;
 
   if (!inputPath) {
-    alert(`Can't read from ${inputPath}.`);
+    alert(`Can't read from: ${inputPath}`);
     inputPath = './README.md';
   };
 
