@@ -1,14 +1,16 @@
-let parseArgv = (args) => {
+let parseArgv = (argv) => {
   let options = {
     i: '',        // no standard input file; -i ''
-    w: true,      // auto attach file-watcher; -w true
+    w: true       // auto attach file-watcher; -w true
   };
   for (let key in options) {
-    let flagIdx = args.indexOf('-' + key);
+    let flagIdx = argv.indexOf('-' + key);
     if (flagIdx > -1) {
-      options[key] = args[flagIdx + 1];
+      options[key] = argv[flagIdx + 1];
     }
   }
+  options.w = options.w !== 'false';
+  console.log(options);
   return options;
 };
 
@@ -42,19 +44,19 @@ let _init = () => {
   };
 
   app.toggleFilewatcher = () => {
-    let state = request.fileWatcher ? false : true;
-    if (state) {
+    let toState = request.fileWatcher === null;
+    if (toState) {
       request.startFileWatcher((type, fileName) => {
         if (type === 'change') {
           request.updateInput()
           .then(app.render)
-          .catch((err) => {});
+          .catch(() => {});
         }
       });
     } else {
       request.stopFileWatcher();
     }
-    app.UI.toggleFilewatcher(state);
+    app.UI.toggleFilewatcher(toState);
   };
 
   app.toggleRawModal = () => {
