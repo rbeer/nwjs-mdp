@@ -17,18 +17,20 @@ let _init = () => {
   const gui = require('nw.gui');
   const fs = require('fs');
   const accessSync = fs.accessSync;
+  const path = require('path');
 
   const options = parseArgv(gui.App.argv);
-  let inputPath = options.f;
+  let inputPath = path.resolve(process.env.PWD, options.f);
   let fileReadable = false;
 
   try {
-    accessSync(options.f, fs.constants.R_OK);
+    accessSync(inputPath, fs.constants.R_OK);
     fileReadable = true;
   } catch (err) {}
+
   if (!inputPath || !fileReadable) {
-    alert(`Can't read from: ${inputPath}`);
-    inputPath = './README.md';
+    alert(`Can't read from: ${inputPath}\nDefaulting to .mdP's README...`);
+    inputPath = path.resolve(process.cwd(), './README.md');
   };
 
   const app = {
