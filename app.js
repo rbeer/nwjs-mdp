@@ -1,6 +1,6 @@
 let parseArgv = (argv) => {
   let options = {
-    i: '',        // no standard input file; -i ''
+    f: '',        // no standard input file; -f ''
     w: true       // auto attach file-watcher; -w true
   };
   for (let key in options) {
@@ -10,14 +10,13 @@ let parseArgv = (argv) => {
     }
   }
   options.w = options.w !== 'false';
-  console.log(options);
   return options;
 };
 
 let _init = () => {
   const gui = require('nw.gui');
   const options = parseArgv(gui.App.argv);
-  let inputPath = options.i;
+  let inputPath = options.f;
 
   if (!inputPath) {
     alert(`Can't read from: ${inputPath}`);

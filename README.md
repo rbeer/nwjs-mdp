@@ -19,11 +19,11 @@ ToDo | Done
 have me some pizza |
 
 ### Displays images for GFM `:smiley:` tags
-:1st_place_medal: :a: :aries: :smirk:
+:1st_place_medal: :a: :libra: :smirk:
 
 # USAGE
-`nw mdp.nw -i ./README.md [-w true]`
-- -_i_ \</path/to/input.md\>
+`nw mdp.nw -f ./README.md [-w <true>]`
+- -_f_ \</path/to/input.md\>
 - \[-_w_ \<false|(default)true\>\] - attach file watcher at app startup
 
 # Toolbar
