@@ -15,10 +15,18 @@ let parseArgv = (argv) => {
 
 let _init = () => {
   const gui = require('nw.gui');
+  const fs = require('fs');
+  const accessSync = fs.accessSync;
+
   const options = parseArgv(gui.App.argv);
   let inputPath = options.f;
+  let fileReadable = false;
 
-  if (!inputPath) {
+  try {
+    accessSync(options.f, fs.constants.R_OK);
+    fileReadable = true;
+  } catch (err) {}
+  if (!inputPath || !fileReadable) {
     alert(`Can't read from: ${inputPath}`);
     inputPath = './README.md';
   };
