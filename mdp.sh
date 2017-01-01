@@ -11,6 +11,10 @@ function print_help {
   exit 1
 }
 
+APP_DIR=/var/wwn/nwjs-mdp
+INPUTPATH=$APP_DIR/README.md
+FILEWATCHER=false
+
 while getopts ":w:hf:" opt; do
   case $opt in
     \?)
@@ -31,4 +35,4 @@ while getopts ":w:hf:" opt; do
   esac
 done
 
-nw . -f $INPUTPATH -w $FILEWATCHER
+nw $APP_DIR -f $INPUTPATH -w $FILEWATCHER
