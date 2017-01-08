@@ -1,3 +1,4 @@
 *.sublime-*
 img/assets/
 node_modules/
+*.log
