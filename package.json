@@ -11,8 +11,11 @@
   "window": {
     "frame": false,
     "fullscreen": false,
-    "icon": "./img/markdown-preview-mark.png"
+    "icon": "./img/markdown-preview-mark.png",
+    "position": "mouse",
+    "position_mouse_center": true
   },
+  "openDevTools": true,
   "dependencies": {
     "request": "^2.79.0",
     "request-promise": "^4.1.1"
@@ -23,9 +26,6 @@
   "homepage": "https://github.com/rbeer/nwjs-mdp#readme",
   "version": "0.0.9",
   "devDependencies": {},
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "keywords": [
     "NWjs",
     "markdown",

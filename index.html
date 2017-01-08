@@ -6,6 +6,20 @@
     <link rel="stylesheet" type="text/css" href="./styles/ui.css" />
     <link rel="stylesheet" type="text/css" href="./styles/git-flavored.css" />
     <link rel="stylesheet" type="text/css" href="./lib/font-awesome/css/font-awesome.min.css" />
+    <script>
+      (() => {
+        let win = nw.Window.get();
+        let manifest = nw.App.manifest
+        if (manifest.openDevTools) {
+          win.showDevTools();
+        }
+        let centerAtMouse = manifest.window.position_mouse_center;
+        let offset = (n) => Math.round(n / 2);
+        if (centerAtMouse) {
+          win.moveBy(-offset(win.width), -offset(win.height));
+        }
+      })();
+    </script>
     <script src="./app.js" type="text/javascript" charset="utf-8"></script>
   </head>
   <body>
