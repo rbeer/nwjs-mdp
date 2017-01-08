@@ -115,9 +115,9 @@ let _init = () => {
     // send the refresh icon spinning
     app.UI.toggleRequestAnimation(true);
 
-    // execute (TODO: rename .compile->.send) request
+    // execute request
     // returns itself (i.e. instance of RenderRequest)
-    request.compile().then((req) => {
+    request.send().then((req) => {
       // update content with result markup
       app.UI.setContent(req.compiledHTMLDocument);
       // flash effect to notify user
