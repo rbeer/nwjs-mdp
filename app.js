@@ -4,7 +4,7 @@
  * Reads -f and -w options from argv and returns
  * their values as members of an object.
  * @param  {Array.<{string}>} argv
- * @return {object.<f:{string},w:{bool}>}
+ * @return {{ f:string,w:bool }}
  */
 let parseArgv = (argv) => {
 
@@ -29,6 +29,30 @@ let parseArgv = (argv) => {
   }
 
   return options;
+};
+
+let _loadScript = (src) => {
+  return new Promise((resolve, reject) => {
+    // <script></script>
+    let scriptEl = document.createElement('script');
+    // define attributes...
+    let attrs = {
+      src: src,
+      charset: 'utf-8',
+      type: 'application/javascript'
+    };
+    // ... and add them to the element
+    for (let name in attrs) {
+      scriptEl.attributes.setNamedItem(document.createAttribute(name));
+      scriptEl[name] = attrs[name];
+    }
+
+    scriptEl.onload = resolve;
+    scriptEl.onerror = reject;
+
+    // add the <script> element
+    document.head.appendChild(scriptEl);
+  });
 };
 
 let _init = () => {
@@ -58,12 +82,12 @@ let _init = () => {
 
   // --------------------- MAIN APP --------------------- //
   const app = {
-    UI: require('./lib/ui.js'),
-    RenderRequest: require('./lib/render-request.js')
+    UI: null,
+    RenderRequest: null
   };
 
   // RenderRequest - handling communication with GitHub API
-  const request = new app.RenderRequest(inputPath, 'raw');
+  let request;
 
   // executes the RenderRequest and displays its result
   app.render = () => {
@@ -124,16 +148,30 @@ let _init = () => {
   // expose system clipboard to window context
   window.clipboard = gui.Clipboard.get();
 
-  // init main layout, buttons, etc.
-  app.UI.init(window);
-  app.UI.setFileNameTitle(inputPath);
-  // render and display `inputPath`
-  app.render();
+  _loadScript('./lib/ui.js')
+  .then(() => {
+    return _loadScript('./lib/render-request.js');
+  })
+  .then(() => {
+    window.app.UI.init();
+  }) // init main layout, buttons, etc.
+  .then(() => {
+    request = new window.app.RenderRequest(inputPath, 'raw');
+    app.UI.setFileNameTitle(inputPath);
+    // render and display `inputPath`
+    app.render();
 
-  // enable file-watcher if -w is true
-  if (options.w) {
-    app.toggleFilewatcher();
-  }
+    // enable file-watcher if -w is true
+    if (options.w) {
+      app.toggleFilewatcher();
+    }
+  })
+  .catch((err) => {
+    if (err) {
+      console.error(err);
+    }
+  });
+
 };
 
 // init app when all DOM Elements are available
