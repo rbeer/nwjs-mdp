@@ -1,0 +1,18 @@
+.github-element {
+    margin-left: 5px;
+    text-overflow: clip;
+}
+
+.github-element[data-status="warn"] i {
+  color: darkgoldenrod;
+}
+.github-element[data-status="warn"] div {
+  color: darkgoldenrod;
+}
+
+.github-element[data-status="err"] i {
+  color: darkred;
+}
+.github-element[data-status="err"] div {
+  color: darkred;
+}
