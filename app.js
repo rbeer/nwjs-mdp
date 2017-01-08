@@ -31,8 +31,19 @@ let parseArgv = (argv) => {
   return options;
 };
 
+/**
+ * Load scripts, using an HTMLScriptElement.  
+ * Resolve and reject of the returned Promise are the element's
+ * onload and onerror handlers.
+ * @param  {string|Array.<string>} srcArray - A path or array of paths to load
+ * @return {Promise}
+ */
 let _loadScript = (src) => {
-  return new Promise((resolve, reject) => {
+
+  // put single source into array
+  let srcPaths = src instanceof Array ? src : [ src ];
+
+  let buildScriptElement = (src) => {
     // <script></script>
     let scriptEl = document.createElement('script');
     // define attributes...
@@ -47,12 +58,22 @@ let _loadScript = (src) => {
       scriptEl[name] = attrs[name];
     }
 
-    scriptEl.onload = resolve;
-    scriptEl.onerror = reject;
+    return scriptEl;
+  };
 
-    // add the <script> element
-    document.head.appendChild(scriptEl);
+  let srcPromises = srcPaths.map((path) => {
+    return new Promise((resolve, reject) => {
+
+      let scriptElement = buildScriptElement(path);
+      scriptElement.onload = resolve;
+      scriptElement.onerror = reject;
+
+      // add the <script> elements
+      document.head.appendChild(scriptElement);
+    });
   });
+
+  return Promise.all(srcPromises);
 };
 
 let _init = () => {
@@ -148,10 +169,7 @@ let _init = () => {
   // expose system clipboard to window context
   window.clipboard = gui.Clipboard.get();
 
-  _loadScript('./lib/ui.js')
-  .then(() => {
-    return _loadScript('./lib/render-request.js');
-  })
+  _loadScript([ './lib/ui.js', './lib/render-request.js', './lib/github-element.cls.js' ])
   .then(() => {
     window.app.UI.init();
   }) // init main layout, buttons, etc.
