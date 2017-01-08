@@ -78,6 +78,10 @@ content  {
   left: 0;
 }
 
+content a {
+  pointer-events: none;
+}
+
 .img-emoji {
   display: inline-block;
   height: 24px;
