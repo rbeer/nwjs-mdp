@@ -13,7 +13,7 @@ function print_help {
 
 APP_DIR=/var/wwn/nwjs-mdp
 INPUTPATH=$APP_DIR/README.md
-FILEWATCHER=false
+FILEWATCHER=true
 
 [ -r $1 ] && INPUTPATH=$1
 
