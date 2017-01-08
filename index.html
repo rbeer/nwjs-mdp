@@ -24,8 +24,13 @@
   </head>
   <body>
     <titlebar>
+      <!-- Left side:
+           [icon] [current inputpath] -->
       <i class="fa fa-pull-left markdown-mark"></i>
       <div class="fa-pull-left title-text" data-filename>Error :/</div>
+
+      <!-- Right side: (declared in reverse order!)
+           [refresh] [raw-overlay] | [file-watcher] | [close] -->
       <i class="fa fa-pull-right fa-times" onclick="app.close();"></i>
       <div class="divider-vertical"></div>
       <i class="fa fa-pull-right fa-chain-broken" onclick="app.toggleFilewatcher();" data-filewatcher></i>
@@ -34,8 +39,10 @@
       <i class="fa fa-pull-right fa-refresh" onclick="app.render();" data-refresh></i>
     </titlebar>
     <container>
+      <!-- Render results will be displayed here -->
       <content>
       </content>
+      <!-- Modal to show raw html source of current render -->
       <rawmodal>
         <textarea id="compiled_raw" readonly></textarea>
         <button class="copy-raw"><i class="fa fa-copy"></i></button>
