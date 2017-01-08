@@ -15,6 +15,8 @@ APP_DIR=/var/wwn/nwjs-mdp
 INPUTPATH=$APP_DIR/README.md
 FILEWATCHER=false
 
+[ -r $1 ] && INPUTPATH=$1
+
 while getopts ":w:hf:" opt; do
   case $opt in
     \?)
