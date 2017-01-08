@@ -3,16 +3,25 @@
     text-overflow: clip;
 }
 
+.github-element div.github-ratelimit.hidden {
+  max-width: 0px;
+}
+.github-element div.github-ratelimit {
+  transition: max-width 0.3s ease-out;
+  max-width: 75%;
+  text-overflow: clip;
+}
+
 .github-element[data-status="warn"] i {
   color: darkgoldenrod;
 }
-.github-element[data-status="warn"] div {
+.github-element[data-status="warn"] div.github-ratelimit {
   color: darkgoldenrod;
 }
 
 .github-element[data-status="err"] i {
   color: darkred;
 }
-.github-element[data-status="err"] div {
+.github-element[data-status="err"] div.github-ratelimit {
   color: darkred;
 }

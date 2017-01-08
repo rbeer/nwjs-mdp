@@ -10,7 +10,7 @@
     <script>
       (() => {
         let win = nw.Window.get();
-        let manifest = nw.App.manifest
+        let manifest = nw.App.manifest;
         if (manifest.openDevTools) {
           win.showDevTools();
         }
