@@ -118,13 +118,14 @@ let _init = () => {
     // execute request
     // returns itself (i.e. instance of RenderRequest)
     request.send().then((req) => {
+      app.UI.githubElement.parseHeaders(req.resHeaders, true);
       // update content with result markup
       app.UI.setContent(req.compiledHTMLDocument);
       // flash effect to notify user
       app.UI.flashContent();
     })
     .catch((err) => {
-      // TODO: 403, github API limit!
+      // TODO: err.statusCode === 403, github API limit!
       console.log(err);
     })
     .finally(app.UI.toggleRequestAnimation); // no matter what, stop spinning
