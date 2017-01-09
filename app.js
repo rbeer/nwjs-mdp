@@ -103,8 +103,9 @@ let _init = () => {
 
   // --------------------- MAIN APP --------------------- //
   const app = {
-    UI: null,
-    RenderRequest: null
+    ui: null,
+    RenderRequest: null,
+    GitHubElement: null
   };
 
   // RenderRequest - handling communication with GitHub API
@@ -113,28 +114,34 @@ let _init = () => {
   // executes the RenderRequest and displays its result
   app.render = () => {
 
+    /**
+     * Sets UI to 'after-render' state
+     * @inner
+     * @param  {object} headers Response headers
+     */
     let finishUI = (headers) => {
       // stop spinning the refresh button
-      app.UI.toggleRequestAnimation();
+      app.ui.toggleRequestAnimation();
       // update github rate limit
-      app.UI.githubElement.parseHeaders(headers, true);
+      app.ui.githubElement.parseHeaders(headers, true);
     };
     // send the refresh icon spinning
-    app.UI.toggleRequestAnimation(true);
+    app.ui.toggleRequestAnimation(true);
 
     // execute request
     // returns itself (i.e. instance of RenderRequest)
     request.send().then((req) => {
       // update content with result markup
-      app.UI.setContent(req.compiledHTMLDocument);
+      app.ui.setContent(req.compiledHTMLDocument);
       // flash effect to notify user
-      app.UI.flashContent();
+      app.ui.flashContent();
 
       finishUI(req.resHeaders);
     })
     .catch((err) => {
       if (err.statusCode === 403) {
         finishUI(err.response.headers);
+        app.ui.githubElement.renderRateLimitError();
       }
       console.log(err);
     });
@@ -161,13 +168,13 @@ let _init = () => {
       request.stopFileWatcher();
     }
     // show new state in UI
-    app.UI.toggleFilewatcher(toState);
+    app.ui.toggleFilewatcher(toState);
   };
 
   // opens or closes raw html modal
   // sets current rendering
   app.toggleRawModal = () => {
-    app.UI.toggleRawModal(request.compiled);
+    app.ui.toggleRawModal(request.compiled);
   };
 
   // closes the app; dummy for cleanup routine
@@ -178,13 +185,18 @@ let _init = () => {
   // expose system clipboard to window context
   window.clipboard = gui.Clipboard.get();
 
-  _loadScript([ './lib/ui.js', './lib/render-request.js', './lib/github-element.cls.js' ])
+  _loadScript([
+    './lib/ui.js',                  // window.app.ui
+    './lib/render-request.js',      // window.app.RenderRequest
+    './lib/github-element.cls.js'   // window.app.GitHubElement
+  ])
   .then(() => {
-    window.app.UI.init();
-  }) // init main layout, buttons, etc.
+    // init main layout, buttons, etc.
+    window.app.ui.init();
+  })
   .then(() => {
     request = new window.app.RenderRequest(inputPath, 'raw');
-    app.UI.setFileNameTitle(inputPath);
+    app.ui.setFileNameTitle(inputPath);
     // render and display `inputPath`
     app.render();
 
