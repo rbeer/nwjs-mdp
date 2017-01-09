@@ -112,24 +112,32 @@ let _init = () => {
 
   // executes the RenderRequest and displays its result
   app.render = () => {
+
+    let finishUI = (headers) => {
+      // stop spinning the refresh button
+      app.UI.toggleRequestAnimation();
+      // update github rate limit
+      app.UI.githubElement.parseHeaders(headers, true);
+    };
     // send the refresh icon spinning
     app.UI.toggleRequestAnimation(true);
 
     // execute request
     // returns itself (i.e. instance of RenderRequest)
     request.send().then((req) => {
-      app.UI.githubElement.parseHeaders(req.resHeaders, true);
       // update content with result markup
       app.UI.setContent(req.compiledHTMLDocument);
       // flash effect to notify user
       app.UI.flashContent();
+
+      finishUI(req.resHeaders);
     })
     .catch((err) => {
-      // TODO: err.statusCode === 403, github API limit!
+      if (err.statusCode === 403) {
+        finishUI(err.response.headers);
+      }
       console.log(err);
-    })
-    .finally(app.UI.toggleRequestAnimation); // no matter what, stop spinning
-                                             // the refresh button
+    });
   };
 
   // enables/disables file-watcher
