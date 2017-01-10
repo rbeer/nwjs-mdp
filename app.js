@@ -107,8 +107,8 @@ let _init = () => {
     RenderRequest: null,
     GitHubElement: null,
     _debug: {
-      simulateRatioLimitError: () => {
-        let simResetDate = new Date(Date.now() + 3600 * 1000);
+      simulateRatioLimitError: (resetIn) => {
+        let simResetDate = new Date(Date.now() + (resetIn || 3600) * 1000);
         app.GitHubElement.renderRateLimitError(simResetDate.getTime() / 1000);
       },
       exceedUnauthedRatioLimit: () => {
