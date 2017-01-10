@@ -126,7 +126,7 @@ let _init = () => {
             let errsWithRateLimit = errs.filter((err) => err.statusCode === 403);
             let failedWithRateLimit = errsWithRateLimit.length;
 
-            console.debug(`${sent} requests sent. %c✓`, 'color: green');
+            console.debug(`${sent} requests sent and answers received. %c✓`, 'color: green');
 
             console.debug(`${finished} requests finished without errors.`);
             console.debug(`${failed} requests failed with error. %c${failed > 0 ? '✓' : 'x'}`, `color: ${failed > 0 ? 'green' : 'red'}`);
@@ -189,9 +189,12 @@ let _init = () => {
       finishUI(req.resHeaders);
     })
     .catch((err) => {
+      // err 403 Forbidden means, the ratio limit is met
       if (err.statusCode === 403) {
+        // set UI with data from responses headers (X-RateLimit-*)
         finishUI(err.response.headers);
-        app.ui.githubElement.renderRateLimitError();
+        // show static error page for RateLimit exhaustion
+        app.GitHubElement.renderRateLimitError(app.ui.githubElement.rateLimitData.reset);
       }
       console.log(err);
     });
