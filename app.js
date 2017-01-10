@@ -1,5 +1,8 @@
 'use strict';
 
+const fs = require('fs');
+const accessSync = fs.accessSync;
+
 /**
  * Reads -f and -w options from argv and returns
  * their values as members of an object.
@@ -14,7 +17,6 @@ let parseArgv = (argv) => {
   // default `option: value`s
   // overwritten by found argv options
   let options = {
-    f: '',        // no standard input file; -f ''
     w: true,      // auto attach file-watcher; -w true
     d: false      // debug mode
   };
@@ -29,6 +31,8 @@ let parseArgv = (argv) => {
     }
   }
 
+  // expect input file path as last argument
+  options.f = argv[argv.length - 1];
   return options;
 };
 
@@ -79,8 +83,6 @@ let _loadScript = (src) => {
 
 let _init = () => {
   const gui = require('nw.gui');
-  const fs = require('fs');
-  const accessSync = fs.accessSync;
   const path = require('path');
 
   // get options object from argv

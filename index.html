@@ -11,7 +11,10 @@
       (() => {
         let win = nw.Window.get();
         let manifest = nw.App.manifest;
-        if (manifest.openDevTools) {
+        // assume SDK version of nwjs, if we have no NaCl plugin
+        const IS_SDK = (window.navigator.plugins.namedItem('Native Client') !== null);
+        console.log(IS_SDK);
+        if (IS_SDK && nw.App.argv.indexOf('-d') > -1) {
           win.showDevTools();
         }
         let centerAtMouse = manifest.window.position_mouse_center;
