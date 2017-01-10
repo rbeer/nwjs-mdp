@@ -1,9 +1,14 @@
 {
   "name": "nwjs-mdp",
   "descitption": "Markdown Preview using NWJS",
+  "version": "0.0.9",
+  "homepage": "https://github.com/rbeer/nwjs-mdp#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rbeer/nwjs-mdp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rbeer/nwjs-mdp/issues"
   },
   "author": "Raphael Beer <raphael.beer@protonmail.com>",
   "license": "MIT",
@@ -21,13 +26,11 @@
     "request": "^2.79.0",
     "request-promise": "^4.1.1"
   },
-  "bugs": {
-    "url": "https://github.com/rbeer/nwjs-mdp/issues"
-  },
-  "homepage": "https://github.com/rbeer/nwjs-mdp#readme",
-  "version": "0.0.9",
   "devDependencies": {
     "minami": "^1.1.1"
+  },
+  "scripts": {
+    "build-docs": "jsdoc --verbose -c ./.jsdoc ./"
   },
   "keywords": [
     "NWjs",
