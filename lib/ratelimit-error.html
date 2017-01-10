@@ -1,10 +1,16 @@
-<div class="github-ratelimit-error">
-  <span>Sorry, your rate limit is hit. You can't issue any more requests to the GitHubAPI, until: </span><br />
-  <span data-reset-at></span><br />
-  <div data-reset-in>
-    <span data-reset-in-h>00</span>:<span data-reset-in-m>00</span>:<span data-reset-in-s>00</span>
-  </div>
-  <div class="hidden" data-reset-done>
-    <span>Your timeout is up! You can refresh the .md, now.</span>
+<div class="errctocat">
+  <div class="errctocat-title">/error/ratelimit</div>
+  <div class="errctocat-content">
+    <div class="errctocat-message">
+      <span>Oh no! You hit your GitHub API request limit.</span>
+      <span>It will reset in:</span>
+    </div>
+    <div data-reset-in>
+      <span data-reset-in-h>00</span>:<span data-reset-in-m>00</span>:<span data-reset-in-s>00</span>
+    </div>
+    <div class="errctocat-token-hint">
+      <button>Request A Token*</button>
+      <span>* Requires GitHub account.</span>
+    </div>
   </div>
 </div>
