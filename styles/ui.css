@@ -148,6 +148,10 @@ rawmodal[data-open] {
   pointer-events: none;
 }
 
+.hidden {
+  display: none;
+}
+
 ::-webkit-scrollbar {
   width: 7px;
   height: 7px;
