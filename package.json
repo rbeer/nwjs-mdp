@@ -13,7 +13,8 @@
     "fullscreen": false,
     "icon": "./img/markdown-preview-mark.png",
     "position": "mouse",
-    "position_mouse_center": true
+    "position_mouse_center": true,
+    "height": 540
   },
   "openDevTools": true,
   "dependencies": {
