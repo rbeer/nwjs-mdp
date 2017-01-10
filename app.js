@@ -15,7 +15,8 @@ let parseArgv = (argv) => {
   // overwritten by found argv options
   let options = {
     f: '',        // no standard input file; -f ''
-    w: true       // auto attach file-watcher; -w true
+    w: true,      // auto attach file-watcher; -w true
+    d: false      // debug mode
   };
   for (let key in options) {
     // index of -key in argv array
@@ -103,67 +104,20 @@ let _init = () => {
 
   // --------------------- MAIN APP --------------------- //
   const app = {
-    ui: null,
-    RenderRequest: null,
-    GitHubElement: null,
-    _debug: {
-      simulateRatioLimitError: (resetIn) => {
-        let simResetDate = new Date(Date.now() + (resetIn || 3600) * 1000);
-        app.GitHubElement.renderRateLimitError(simResetDate.getTime() / 1000);
-      },
-      exceedUnauthedRatioLimit: () => {
-        console.debug('Exceeding ratio limit for unauthorized user: ');
-
-        let requests = {
-          sent: 0,
-          finished: 0,
-          withError: []
-        };
-
-        let reportWhenFinished = () => {
-          let errs = requests.withError;
-          let sent = requests.sent;
-          let finished = requests.finished;
-          let failed = errs.length;
-
-          if (finished + failed === sent) {
-            let errsWithRateLimit = errs.filter((err) => err.statusCode === 403);
-            let failedWithRateLimit = errsWithRateLimit.length;
-
-            console.debug(`${sent} requests sent and answers received. %c✓`, 'color: green');
-
-            console.debug(`${finished} requests finished without errors.`);
-            console.debug(`${failed} requests failed with error. %c${failed > 0 ? '✓' : 'x'}`, `color: ${failed > 0 ? 'green' : 'red'}`);
-            if (failedWithRateLimit > 0) {
-              let resetHeader = parseInt(errsWithRateLimit[0].response.headers['x-ratelimit-reset'], 10) * 1000;
-              console.debug(`%c${failedWithRateLimit} requests failed with statusCode 403`, 'color: white; background: green');
-              let reset = new Date(resetHeader).toLocaleString();
-              console.debug('Congratulations! You are now officially blocked from the GitHub API, until ' + reset);
-            }
-          }
-        };
-
-        for (let i = 1; i <= 65; i++) {
-          let requestId = i;
-          requests.sent++;
-          request.send().then(() => {
-            requests.finished++;
-            console.debug(`Request #${requestId} finished. %c✓`, 'color: green');
-            reportWhenFinished();
-          })
-          .catch((err) => {
-            requests.withError.push(err);
-            console.debug(`Request #${requestId} failed. %cx`, 'color: red');
-            reportWhenFinished();
-          });
-          console.debug(`Request #${requestId} sent. ~`);
-        }
-      }
-    }
+    ui: null,               // ui functions
+    RenderRequest: null,    // RenderRequest constructor
+    GitHubElement: null,    // GitHubElement constructor
+    request: null           // RenderRequest instance - handling communication with GitHub API
   };
 
-  // RenderRequest - handling communication with GitHub API
-  let request;
+  // augment app with debug goodies, if `-d(ebug) true`
+  if (options.d) {
+    _loadScript('./lib/debug.js').then(() => {
+      window._debug = app._debug;
+      console.debug('Welcome in debug mode!');
+      console.debug('Goodies are in app._debug (or simply _debug).');
+    });
+  }
 
   // executes the RenderRequest and displays its result
   app.render = () => {
@@ -184,7 +138,7 @@ let _init = () => {
 
     // execute request
     // returns itself (i.e. instance of RenderRequest)
-    request.send().then((req) => {
+    app.request.send().then((req) => {
       // update content with result markup
       app.ui.setContent(req.compiledHTMLDocument);
       // flash effect to notify user
@@ -209,20 +163,20 @@ let _init = () => {
     // state to toggle to
     // true/toggle on, when no fileWatcher is set for the RenderRequest
     // false/toggle off, when RenderRequest has fileWatcher
-    let toState = request.fileWatcher === null;
+    let toState = app.request.fileWatcher === null;
 
     if (toState) {
       // start new file-watcher
-      request.startFileWatcher((type, fileName) => {
+      app.request.startFileWatcher((type, fileName) => {
         if (type === 'change') {
-          request.updateInput() // update input from changed file
+          app.request.updateInput() // update input from changed file
           .then(app.render)     // render with updated input
           .catch(() => {});     // ignore errors
         }
       });
     } else {
-      // stop file-watcher; sets request.fileWatcher = null
-      request.stopFileWatcher();
+      // stop file-watcher; sets app.request.fileWatcher = null
+      app.request.stopFileWatcher();
     }
     // show new state in UI
     app.ui.toggleFilewatcher(toState);
@@ -231,7 +185,7 @@ let _init = () => {
   // opens or closes raw html modal
   // sets current rendering
   app.toggleRawModal = () => {
-    app.ui.toggleRawModal(request.compiled);
+    app.ui.toggleRawModal(app.request.compiled);
   };
 
   // closes the app; dummy for cleanup routine
@@ -252,7 +206,7 @@ let _init = () => {
     window.app.ui.init();
   })
   .then(() => {
-    request = new window.app.RenderRequest(inputPath, 'raw');
+    app.request = new app.RenderRequest(inputPath, 'raw');
     app.ui.setFileNameTitle(inputPath);
     // render and display `inputPath`
     app.render();
