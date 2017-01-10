@@ -1,5 +1,8 @@
 'use strict';
 
+const fs = require('fs');
+const accessSync = fs.accessSync;
+
 /**
  * Reads -f and -w options from argv and returns
  * their values as members of an object.
@@ -14,8 +17,8 @@ let parseArgv = (argv) => {
   // default `option: value`s
   // overwritten by found argv options
   let options = {
-    f: '',        // no standard input file; -f ''
-    w: true       // auto attach file-watcher; -w true
+    w: true,      // auto attach file-watcher; -w true
+    d: false      // debug mode
   };
   for (let key in options) {
     // index of -key in argv array
@@ -28,6 +31,8 @@ let parseArgv = (argv) => {
     }
   }
 
+  // expect input file path as last argument
+  options.f = argv[argv.length - 1];
   return options;
 };
 
@@ -78,8 +83,6 @@ let _loadScript = (src) => {
 
 let _init = () => {
   const gui = require('nw.gui');
-  const fs = require('fs');
-  const accessSync = fs.accessSync;
   const path = require('path');
 
   // get options object from argv
@@ -103,39 +106,55 @@ let _init = () => {
 
   // --------------------- MAIN APP --------------------- //
   const app = {
-    UI: null,
-    RenderRequest: null
+    ui: null,               // ui functions
+    RenderRequest: null,    // RenderRequest constructor
+    GitHubElement: null,    // GitHubElement constructor
+    request: null           // RenderRequest instance - handling communication with GitHub API
   };
 
-  // RenderRequest - handling communication with GitHub API
-  let request;
+  // augment app with debug goodies, if `-d(ebug) true`
+  if (options.d) {
+    _loadScript('./lib/debug.js').then(() => {
+      window._debug = app._debug;
+      console.debug('Welcome in debug mode!');
+      console.debug('Goodies are in app._debug (or simply _debug).');
+    });
+  }
 
   // executes the RenderRequest and displays its result
   app.render = () => {
 
+    /**
+     * Sets UI to 'after-render' state
+     * @inner
+     * @param  {object} headers Response headers
+     */
     let finishUI = (headers) => {
-      // no matter what,
       // stop spinning the refresh button
-      app.UI.toggleRequestAnimation();
+      app.ui.toggleRequestAnimation();
       // update github rate limit
-      app.UI.githubElement.parseHeaders(headers, true);
+      app.ui.githubElement.parseHeaders(headers, true);
     };
     // send the refresh icon spinning
-    app.UI.toggleRequestAnimation(true);
+    app.ui.toggleRequestAnimation(true);
 
     // execute request
     // returns itself (i.e. instance of RenderRequest)
-    request.send().then((req) => {
+    app.request.send().then((req) => {
       // update content with result markup
-      app.UI.setContent(req.compiledHTMLDocument);
+      app.ui.setContent(req.compiledHTMLDocument);
       // flash effect to notify user
-      app.UI.flashContent();
+      app.ui.flashContent();
 
       finishUI(req.resHeaders);
     })
     .catch((err) => {
+      // err 403 Forbidden means, the ratio limit is met
       if (err.statusCode === 403) {
+        // set UI with data from responses headers (X-RateLimit-*)
         finishUI(err.response.headers);
+        // show static error page for RateLimit exhaustion
+        app.GitHubElement.renderRateLimitError(app.ui.githubElement.rateLimitData.reset);
       }
       console.log(err);
     });
@@ -146,29 +165,29 @@ let _init = () => {
     // state to toggle to
     // true/toggle on, when no fileWatcher is set for the RenderRequest
     // false/toggle off, when RenderRequest has fileWatcher
-    let toState = request.fileWatcher === null;
+    let toState = app.request.fileWatcher === null;
 
     if (toState) {
       // start new file-watcher
-      request.startFileWatcher((type, fileName) => {
+      app.request.startFileWatcher((type, fileName) => {
         if (type === 'change') {
-          request.updateInput() // update input from changed file
+          app.request.updateInput() // update input from changed file
           .then(app.render)     // render with updated input
           .catch(() => {});     // ignore errors
         }
       });
     } else {
-      // stop file-watcher; sets request.fileWatcher = null
-      request.stopFileWatcher();
+      // stop file-watcher; sets app.request.fileWatcher = null
+      app.request.stopFileWatcher();
     }
     // show new state in UI
-    app.UI.toggleFilewatcher(toState);
+    app.ui.toggleFilewatcher(toState);
   };
 
   // opens or closes raw html modal
   // sets current rendering
   app.toggleRawModal = () => {
-    app.UI.toggleRawModal(request.compiled);
+    app.ui.toggleRawModal(app.request.compiled);
   };
 
   // closes the app; dummy for cleanup routine
@@ -179,13 +198,18 @@ let _init = () => {
   // expose system clipboard to window context
   window.clipboard = gui.Clipboard.get();
 
-  _loadScript([ './lib/ui.js', './lib/render-request.js', './lib/github-element.cls.js' ])
+  _loadScript([
+    './lib/ui.js',                  // window.app.ui
+    './lib/render-request.js',      // window.app.RenderRequest
+    './lib/github-element.cls.js'   // window.app.GitHubElement
+  ])
   .then(() => {
-    window.app.UI.init();
-  }) // init main layout, buttons, etc.
+    // init main layout, buttons, etc.
+    window.app.ui.init();
+  })
   .then(() => {
-    request = new window.app.RenderRequest(inputPath, 'raw');
-    app.UI.setFileNameTitle(inputPath);
+    app.request = new app.RenderRequest(inputPath, 'raw');
+    app.ui.setFileNameTitle(inputPath);
     // render and display `inputPath`
     app.render();
 

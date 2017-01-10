@@ -16,11 +16,12 @@ function print_help {
 
 APP_DIR=/var/wwn/nwjs-mdp
 INPUTPATH=$APP_DIR/README.md
-FILEWATCHER=true
+FILEWATCHER="true"
+DEBUG="false"
 
 [ -r $1 ] && INPUTPATH=$1
 
-while getopts ":w:hf:" opt; do
+while getopts ":w:hdf:" opt; do
   case $opt in
     \?)
       print_help $OPTARG $opt
@@ -28,11 +29,14 @@ while getopts ":w:hf:" opt; do
     :)
       print_help $OPTARG $opt
       ;;
-    h)
-      print_help
+    d)
+      DEBUG="true"
       ;;
     f)
       INPUTPATH=$OPTARG
+      ;;
+    h)
+      print_help
       ;;
     w)
       FILEWATCHER=$OPTARG
@@ -40,4 +44,4 @@ while getopts ":w:hf:" opt; do
   esac
 done
 
-nw $APP_DIR -f $INPUTPATH -w $FILEWATCHER
+nw $APP_DIR -f $INPUTPATH -w $FILEWATCHER -d $DEBUG
