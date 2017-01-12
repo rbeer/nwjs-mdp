@@ -107,8 +107,9 @@ let _init = () => {
   // --------------------- MAIN APP --------------------- //
   const app = {
     ui: null,               // ui functions
-    RenderRequest: null,    // RenderRequest constructor
+    toolTip: null,          // toolTip functions
     GitHubElement: null,    // GitHubElement constructor
+    RenderRequest: null,    // RenderRequest constructor
     request: null           // RenderRequest instance - handling communication with GitHub API
   };
 
@@ -200,12 +201,16 @@ let _init = () => {
 
   _loadScript([
     './lib/ui.js',                  // window.app.ui
+    './lib/tooltip.cls.js',         // window.app.toolTip
     './lib/render-request.js',      // window.app.RenderRequest
     './lib/github-element.cls.js'   // window.app.GitHubElement
   ])
   .then(() => {
     // init main layout, buttons, etc.
-    window.app.ui.init();
+    return window.app.ui.init();
+  })
+  .then(() => {
+    return window.app.toolTip.init();
   })
   .then(() => {
     app.request = new app.RenderRequest(inputPath, 'raw');
