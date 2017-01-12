@@ -17,7 +17,7 @@ function print_help {
 APP_DIR=/var/wwn/nwjs-mdp
 INPUTPATH=$APP_DIR/README.md
 FILEWATCHER="true"
-DEBUG="false"
+DEBUG=""
 
 [ -r $1 ] && INPUTPATH=$1
 
@@ -30,7 +30,7 @@ while getopts ":w:hdf:" opt; do
       print_help $OPTARG $opt
       ;;
     d)
-      DEBUG="true"
+      DEBUG="-d"
       ;;
     f)
       INPUTPATH=$OPTARG
@@ -44,4 +44,4 @@ while getopts ":w:hdf:" opt; do
   esac
 done
 
-nw $APP_DIR -f $INPUTPATH -w $FILEWATCHER -d $DEBUG
+nw $APP_DIR $DEBUG -w $FILEWATCHER $INPUTPATH
