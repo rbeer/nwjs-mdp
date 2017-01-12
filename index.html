@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href="./styles/ui.css" />
     <link rel="stylesheet" type="text/css" href="./styles/git-flavored.css" />
     <link rel="stylesheet" type="text/css" href="./styles/github-element.css" />
+    <link rel="stylesheet" type="text/css" href="./styles/tooltip.css" />
     <link rel="stylesheet" type="text/css" href="./lib/font-awesome/css/font-awesome.min.css" />
     <script>
       (() => {
@@ -13,7 +14,6 @@
         let manifest = nw.App.manifest;
         // assume SDK version of nwjs, if we have no NaCl plugin
         const IS_SDK = (window.navigator.plugins.namedItem('Native Client') !== null);
-        console.log(IS_SDK);
         if (IS_SDK && nw.App.argv.indexOf('-d') > -1) {
           win.showDevTools();
         }
@@ -34,14 +34,22 @@
       <div class="fa-pull-left title-text" data-filename>Error :/</div>
 
       <!-- Right side: (declared in reverse order!)
-           [refresh] [raw-overlay] | [file-watcher] | [close] -->
-      <i class="fa fa-pull-right fa-times" onclick="app.close();"></i>
+           [refresh] [raw-overlay] [GitHubElement] | [file-watcher] | [close] -->
+      <div class="pull-right titlebar-icon-container" data-tooltip-text="Quit .mdP (Ctrl-q)">
+        <i class="fa fa-pull-right fa-times" onclick="app.close();"></i>
+      </div>
       <div class="divider-vertical"></div>
-      <i class="fa fa-pull-right fa-chain-broken" onclick="app.toggleFilewatcher();" data-filewatcher></i>
-      <div class="pull-right github-element" data-github-element></div>
+      <div class="pull-right titlebar-icon-container" data-tooltip-text="On-Save rendering">
+        <i class="fa fa-pull-right fa-chain-broken" onclick="app.toggleFilewatcher();" data-filewatcher></i>
+      </div>
+      <div class="pull-right github-element titlebar-icon-container" data-github-element data-tooltip-text="GitHub API limits"></div>
       <div class="divider-vertical"></div>
-      <i class="fa fa-pull-right fa-hashtag" onclick="app.toggleRawModal();"></i>
-      <i class="fa fa-pull-right fa-refresh" onclick="app.render();" data-refresh></i>
+      <div class="pull-right titlebar-icon-container" data-tooltip-text="Show output HTML">
+        <i class="fa fa-pull-right fa-hashtag" onclick="app.toggleRawModal();" data-filewatcher></i>
+      </div>
+      <div class="pull-right titlebar-icon-container" data-tooltip-text="Refresh">
+        <i class="fa fa-pull-right fa-refresh" onclick="app.render();" data-refresh data-filewatcher></i>
+      </div>
     </titlebar>
     <container>
       <!-- Render results will be displayed here -->
@@ -53,5 +61,6 @@
         <button class="copy-raw"><i class="fa fa-copy"></i></button>
       </rawmodal>
     </container>
+    <div class="tooltip title-text" data-tooltip></div>
   </body>
 </html>
