@@ -1,7 +1,7 @@
 {
   "name": "nwjs-mdp",
   "descitption": "Markdown Preview using NWJS",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "homepage": "https://github.com/rbeer/nwjs-mdp#readme",
   "repository": {
     "type": "git",
