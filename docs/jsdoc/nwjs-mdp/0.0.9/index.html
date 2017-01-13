@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Home - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="GitHubElement.html">GitHubElement</a><ul class='methods'><li data-type='method'><a href="GitHubElement.html#.renderRateLimitError">renderRateLimitError</a></li><li data-type='method'><a href="GitHubElement.html#parseHeaders">parseHeaders</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-_debug.html">_debug</a><ul class='methods'><li data-type='method'><a href="module-_debug.html#.exceedUnauthedRatioLimit">exceedUnauthedRatioLimit</a></li><li data-type='method'><a href="module-_debug.html#.simulateRatioLimitError">simulateRatioLimitError</a></li></ul></li><li><a href="module-tooltip.html">tooltip</a><ul class='methods'><li data-type='method'><a href="module-tooltip.html#.toolTip.clearTimeout">toolTip.clearTimeout</a></li><li data-type='method'><a href="module-tooltip.html#.toolTip.hide">toolTip.hide</a></li><li data-type='method'><a href="module-tooltip.html#.toolTip.init">toolTip.init</a></li><li data-type='method'><a href="module-tooltip.html#.toolTip.show">toolTip.show</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#_loadScript">_loadScript</a></li><li><a href="global.html#parseArgv">parseArgv</a></li></ul>
+</nav>
+
+<div id="main">
+    
+
+    
+
+
+
+    
+
+
+
+
+
+
+
+
+
+    
+
+
+    <section class="readme">
+        <article><p><img src="./img/markdown-preview-mark.png" alt=""></p>
+<h1>nwjs-markdown-preview</h1><h3>Download</h3><p><a href="https://github.com/rbeer/nwjs-mdp.git">Just GitHub, for now</a></p>
+<h3>Renders GitHub Flavored Markdown</h3><pre class="prettyprint source lang-js"><code>const examples = {
+  active: [ 'codeblocks', 'Strikethrough', 'Tables' ],
+  syntaxHighlighting: true
+};</code></pre><table>
+<thead>
+<tr>
+<th>ToDo</th>
+<th>Done</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><del>write README.md</del></td>
+<td>X</td>
+</tr>
+<tr>
+<td>have me some pizza</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3>Displays images for GFM <code>:smiley:</code> tags</h3><p>:1st_place_medal: :a: :libra: :smirk:</p>
+<hr>
+<h1>USAGE</h1><p><code>nw mdp.nw [-d] [-w &lt;true&gt;] &lt;filename.md&gt;</code></p>
+<ul>
+<li>[-<em>d</em>] - enable <a href="#debug-mode">debug mode</a></li>
+<li>[-<em>w</em> \<false|_true_\>] - attach file watcher at app startup</li>
+</ul>
+<hr>
+<h1>Toolbar</h1><h1><img src="./img/refresh.png" alt=""> | <img src="./img/refresh-spin.gif" alt=""></h1><p>You can manually refresh the output by clicking this icon.
+The icon is spinning, when a document is being rendered.</p>
+<h1><img src="./img/hashtag.png" alt=""></h1><p>Shows the ouput HTML source.</p>
+<p>-</p>
+<h1><img src="./img/github.png" alt=""></h1><p>Reveals GitHub API request limit values on click.<br>The icon indicates 3 states by its color:</p>
+<ul>
+<li><img src="./img/github_16.png" alt=""> - &gt;= 10% of available API calls left</li>
+<li><img src="./img/github_16_warn.png" alt=""> - &lt; 10% calls left</li>
+<li><img src="./img/github_16_err.png" alt=""> - No API calls left</li>
+</ul>
+<p>When you have no API calls left, you can either wait the rest of the hour (since your first request out of 60/h) for the limit
+to reset or request an auth token with your GitHub account.<br>You can right click the icon and get a token, right away.</p>
+<h1><img src="./img/chain.png" alt=""> | <img src="./img/chain-broken.png" alt=""></h1><p>Disable/Enable watching the content of the input file, auto-refreshing when it changes.
+Enabled by default, which can be overriden with <code>-w false</code>.</p>
+<p>-</p>
+<h1><img src="./img/times.png" alt=""></h1><p>Closes the App.</p>
+<hr>
+<h1>Debug Mode</h1><p><strong><em>NOTE: You will need the SDK version of <a href="https://nwjs.io/">nwjs</a> to enable debug mode.</em></strong></p>
+<p>### </p>
+<h3>app._debug</h3><p>The debug mode augments the main app (or <code>window.app</code>) with a <code>_debug</code> object. It's members are</p>
+<ul>
+<li><strong><code>exceedUnauthedRatioLimit</code></strong> [<a href="https://rbeer.github.io/nwjs-mdp/jsdoc/0.1.0/module-_debug.html#.simulateRatioLimitError">docs</a>]<br>Exceeds GitHub API call limit for unauthorized users. WARNING: This will, like <em>for
+realz</em>, ban your current IP from making anymore API calls, until the reset period
+(up to 1h) is over. <em>&quot;I repeat, this is not a drill! ~chrrck~ &quot;</em></li>
+<li><strong><code>simulateRatioLimitError</code></strong> [<a href="https://rbeer.github.io/nwjs-mdp/jsdoc/0.1.0/module-_debug.html#.exceedUnauthedRatioLimit">docs</a>]<br>Simulates exceeded ratio limit to debug error page. This one really is a simulation.
+It doesn't make a single API call.</li>
+</ul></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Thu Jan 12 2017 09:57:50 GMT+0100 (CET) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

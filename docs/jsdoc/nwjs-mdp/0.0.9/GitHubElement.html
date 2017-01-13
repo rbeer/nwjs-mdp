@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>GitHubElement - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="GitHubElement.html">GitHubElement</a><ul class='methods'><li data-type='method'><a href="GitHubElement.html#.renderRateLimitError">renderRateLimitError</a></li><li data-type='method'><a href="GitHubElement.html#parseHeaders">parseHeaders</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-_debug.html">_debug</a><ul class='methods'><li data-type='method'><a href="module-_debug.html#.exceedUnauthedRatioLimit">exceedUnauthedRatioLimit</a></li><li data-type='method'><a href="module-_debug.html#.simulateRatioLimitError">simulateRatioLimitError</a></li></ul></li><li><a href="module-tooltip.html">tooltip</a><ul class='methods'><li data-type='method'><a href="module-tooltip.html#.toolTip.clearTimeout">toolTip.clearTimeout</a></li><li data-type='method'><a href="module-tooltip.html#.toolTip.hide">toolTip.hide</a></li><li data-type='method'><a href="module-tooltip.html#.toolTip.init">toolTip.init</a></li><li data-type='method'><a href="module-tooltip.html#.toolTip.show">toolTip.show</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#_loadScript">_loadScript</a></li><li><a href="global.html#parseArgv">parseArgv</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">GitHubElement</h1>
+    
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        GitHubElement
+        </h2>
+        
+            <div class="class-description"><p>GitHub API rate limit status component</p></div>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+    <h2>Constructor</h2>
+    
+
+    <h4 class="name" id="GitHubElement"><span class="type-signature"></span>new GitHubElement<span class="signature">(rootElement<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Creates the widget's elements inside a given root<br>The root element can be placed and styled at will, GitHubElement
+will not modify/add/remove any styles/classes on it.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>rootElement</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">HTMLDivElement</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    document.querySelector('[data-github-element]')
+                
+                </td>
+            
+
+            <td class="description last"><p><div> container for component</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_github-element.cls.js.html">lib/github-element.cls.js</a>, <a href="lib_github-element.cls.js.html#line34">line 34</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        <p>If passed rootElement is not an instance of HTMLDivElement
+                    and no element with 'data-github-element' attribute was found.</p>
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">TypeError</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+
+
+    <h5>Examples</h5>
+    
+        <p class="code-caption">Setup HTML:</p>
+    
+    <pre class="prettyprint"><code>&lt;body>
+  &lt;statusbar>
+    &lt;div class="pull-right" data-github-element>&lt;/div>
+  &lt;/statusbar>
+&lt;/body></code></pre>
+
+        <p class="code-caption">Setup JavaScript:</p>
+    
+    <pre class="prettyprint"><code>let rootDiv = document.querySelector('statusbar div');
+let githubElement = new GitHubElement(rootDiv);
+// ... new GitHubElement(); works too, because the &lt;div>
+// has the data-github-element attribute.</code></pre>
+
+        <p class="code-caption">Result HTML:</p>
+    
+    <pre class="prettyprint"><code>&lt;body>
+  &lt;statusbar>
+    &lt;div class="pull-right" data-github-element>
+      &lt;i class="fa fa-pull-right fa-github">&lt;/i>
+      &lt;div class="pull-right title-text github-ratelimit hidden">
+        &lt;span data-github-ratelimit-limit>--&lt;/span> / &lt;span data-github-ratelimit-remaining>--&lt;/span>
+      &lt;/div>
+    &lt;/div>
+  &lt;/statusbar>
+&lt;/body></code></pre>
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="iconElement"><span class="type-signature"></span>iconElement<span class="type-signature"> :HTMLElement</span></h4>
+
+
+
+
+<div class="description">
+    <p>Fontawesome GitHub icon</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">HTMLElement</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_github-element.cls.js.html">lib/github-element.cls.js</a>, <a href="lib_github-element.cls.js.html#line67">line 67</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="rateLimitData"><span class="type-signature"></span>rateLimitData<span class="type-signature"> :Object</span></h4>
+
+
+
+
+<div class="description">
+    <p>Data from X-RateLimit-* GitHub API response headers</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_github-element.cls.js.html">lib/github-element.cls.js</a>, <a href="lib_github-element.cls.js.html#line119">line 119</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="rateLimitElements"><span class="type-signature"></span>rateLimitElements<span class="type-signature"> :Object</span></h4>
+
+
+
+
+<div class="description">
+    <p>Elements for rate limit numbers</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_github-element.cls.js.html">lib/github-element.cls.js</a>, <a href="lib_github-element.cls.js.html#line80">line 80</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="rootElement"><span class="type-signature"></span>rootElement<span class="type-signature"> :HTMLDivElement</span></h4>
+
+
+
+
+<div class="description">
+    <p>Root/Container <div> element</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">HTMLDivElement</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_github-element.cls.js.html">lib/github-element.cls.js</a>, <a href="lib_github-element.cls.js.html#line61">line 61</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".renderRateLimitError"><span class="type-signature">(static) </span>renderRateLimitError<span class="signature">(reset)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Renders static error page as <content>, when the GitHub
+API rate limit is met (i.e. you can't send anymore requests,
+until credentials upgrade or reset timeout has passed).</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>reset</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Value of GitHub API reponse headers field X-RateLimit-Reset</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_github-element.cls.js.html">lib/github-element.cls.js</a>, <a href="lib_github-element.cls.js.html#line181">line 181</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="parseHeaders"><span class="type-signature"></span>parseHeaders<span class="signature">(headers, updateElements<span class="signature-attributes">nullable</span>)</span><span class="type-signature"> &rarr; {<a href="GitHubElement.html#rateLimitData">GitHubElement#rateLimitData</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Parses IncomingMessage.headers object into GitHubElement#rateLimitData</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>headers</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Headers of the GitHub API response</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>updateElements</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">bool</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                    &lt;nullable><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>DOM Elements will be updated with new values, if <code>true</code>.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_github-element.cls.js.html">lib/github-element.cls.js</a>, <a href="lib_github-element.cls.js.html#line140">line 140</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="GitHubElement.html#rateLimitData">GitHubElement#rateLimitData</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Thu Jan 12 2017 09:57:50 GMT+0100 (CET) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>lib/github-element.cls.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="GitHubElement.html">GitHubElement</a><ul class='methods'><li data-type='method'><a href="GitHubElement.html#.renderRateLimitError">renderRateLimitError</a></li><li data-type='method'><a href="GitHubElement.html#parseHeaders">parseHeaders</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-_debug.html">_debug</a><ul class='methods'><li data-type='method'><a href="module-_debug.html#.exceedUnauthedRatioLimit">exceedUnauthedRatioLimit</a></li><li data-type='method'><a href="module-_debug.html#.simulateRatioLimitError">simulateRatioLimitError</a></li></ul></li><li><a href="module-tooltip.html">tooltip</a><ul class='methods'><li data-type='method'><a href="module-tooltip.html#.toolTip.clearTimeout">toolTip.clearTimeout</a></li><li data-type='method'><a href="module-tooltip.html#.toolTip.hide">toolTip.hide</a></li><li data-type='method'><a href="module-tooltip.html#.toolTip.init">toolTip.init</a></li><li data-type='method'><a href="module-tooltip.html#.toolTip.show">toolTip.show</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#_loadScript">_loadScript</a></li><li><a href="global.html#parseArgv">parseArgv</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">lib/github-element.cls.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>(() => {
+
+  'use strict';
+
+  /**
+   * @class GitHub API rate limit status component
+   * @throws {TypeError} If passed rootElement is not an instance of HTMLDivElement
+   *                     and no element with 'data-github-element' attribute was found.
+   * @example &lt;caption>Setup HTML:&lt;/caption>
+   * &lt;body>
+   *   &lt;statusbar>
+   *     &lt;div class="pull-right" data-github-element>&lt;/div>
+   *   &lt;/statusbar>
+   * &lt;/body>
+   *
+   * @example &lt;caption>Setup JavaScript:&lt;/caption>
+   * let rootDiv = document.querySelector('statusbar div');
+   * let githubElement = new GitHubElement(rootDiv);
+   * // ... new GitHubElement(); works too, because the &lt;div>
+   * // has the data-github-element attribute.
+   *
+   * @example &lt;caption>Result HTML:&lt;/caption>
+   * &lt;body>
+   *   &lt;statusbar>
+   *     &lt;div class="pull-right" data-github-element>
+   *       &lt;i class="fa fa-pull-right fa-github">&lt;/i>
+   *       &lt;div class="pull-right title-text github-ratelimit hidden">
+   *         &lt;span data-github-ratelimit-limit>--&lt;/span> / &lt;span data-github-ratelimit-remaining>--&lt;/span>
+   *       &lt;/div>
+   *     &lt;/div>
+   *   &lt;/statusbar>
+   * &lt;/body>
+   */
+  class GitHubElement {
+
+    /**
+     * Creates the widget's elements inside a given root  
+     * The root element can be placed and styled at will, GitHubElement
+     * will not modify/add/remove any styles/classes on it.
+     * @param {HTMLDivElement} [rootElement=document.querySelector('[data-github-element]')] - &lt;div> container for component
+     */
+    constructor(rootElement) {
+
+      if (!(rootElement instanceof HTMLDivElement)) {
+        rootElement = document.querySelector('[data-github-element]');
+      }
+
+      if (!rootElement) {
+        let noRootErr = new TypeError();
+        noRootErr.message = 'Please provide an HTMLDivElement as first argument \n' +
+                            'or place a &lt;div> with attribute data-github-element in \n' +
+                            'your markup!';
+        noRootErr.code = 'ENOROOT';
+        throw noRootErr;
+      }
+
+      /**
+       * Root/Container &lt;div> element
+       * @type {HTMLDivElement}
+       */
+      this.rootElement = rootElement;
+
+      /**
+       * Fontawesome GitHub icon
+       * @type {HTMLElement}
+       */
+      this.iconElement = (() => {
+        let iconEl = document.createElement('i');
+        iconEl.className = 'fa fa-pull-right fa-github';
+        this.rootElement.appendChild(iconEl);
+        return iconEl;
+      })();
+
+      /**
+       * Elements for rate limit numbers
+       * @type {{ container: HTMLDivElement,
+       *          limit: HTMLSpanElement,
+       *          remaining: HTMLSpanElement }}
+       */
+      this.rateLimitElements = (() => {
+
+        // returned object
+        let rlElements = {};
+
+        // container &lt;div>, holds data-status value
+        let rlDiv = document.createElement('div');
+        rlDiv.className = 'pull-right title-text github-ratelimit hidden';
+        rlElements['container'] = rlDiv;
+
+        // HTMLSpanElements (a/k/a fields) for values
+        [ 'remaining', 'limit' ].forEach((field, idx, list) => {
+          let fieldSpan = document.createElement('span');
+          // 'limit' -> 'Limit', 'remaining' -> 'Remaining'
+          let firstUpperFieldName = field[0].toUpperCase() + field.slice(1);
+
+          // &lt;... data-github-ratelimit-(limit|remaining)>
+          fieldSpan.dataset[`githubRatelimit${firstUpperFieldName}`] = '';
+          // add initial value
+          fieldSpan.appendChild(document.createTextNode('--'));
+          // add field to return object
+          rlElements[field] = fieldSpan;
+          // add field to container element
+          rlElements['container'].appendChild(fieldSpan);
+          // add separator, if it's not the last field
+          if (idx !== list.length - 1) {
+            rlElements['container'].appendChild(document.createTextNode(' / '));
+          }
+        });
+
+        this.rootElement.appendChild(rlElements['container']);
+
+        return rlElements;
+      })();
+
+      /**
+       * Data from X-RateLimit-* GitHub API response headers
+       * @type {{ limit: number, remaining: number, reset: number }}
+       */
+      this.rateLimitData = {
+        limit: -1,       // X-RateLimit-Limit: 60           | limit on api calls with current creds
+        remaining: -1,   // X-RateLimit-Remaining: 52       | api calls remaining, until reset
+        reset: -1,       // X-RateLimit-Reset: 1483922286   | epoch time when the rate limit resets
+
+        date: null       // Date: Mon, 09 Jan 20...         | date of request last values came from
+      };
+
+      this.iconElement.addEventListener('click', (evt) => {
+        evt.preventDefault();
+        this.rateLimitElements.container.classList.toggle('hidden');
+        return false;
+      });
+    }
+
+    /**
+     * Parses IncomingMessage.headers object into GitHubElement#rateLimitData
+     * @param  {object} headers        - Headers of the GitHub API response
+     * @param  {?bool}  updateElements - DOM Elements will be updated with new values, if `true`.
+     * @return {GitHubElement#rateLimitData}
+     */
+    parseHeaders(headers, updateElements) {
+      const headerRX = /X-RateLimit-(Limit|Remaining|Reset)/g;
+      const exposeHeader = headers['access-control-expose-headers'];
+      const hasHeaders = exposeHeader.match(headerRX).length >= 3;
+
+      if (hasHeaders) {
+        for (let key in this.rateLimitData) {
+          let value = parseInt(headers['x-ratelimit-' + key], 10);
+          this.rateLimitData[key] = isNaN(value) ? new Date(headers[key]) : value;
+        }
+      }
+
+      if (updateElements) {
+        let currentLimit = this.rateLimitData.limit;
+        let currentRemaining = this.rateLimitData.remaining;
+        this.rateLimitElements.limit.innerText = currentLimit;
+        this.rateLimitElements.remaining.innerText = currentRemaining;
+        this.status = currentRemaining === 0 ? 'err' : currentRemaining * 2 &lt;= currentLimit ? 'warn' : '';
+      }
+
+      return this.rateLimitData;
+    }
+
+    get status() {
+      return this.rootElement.dataset.status;
+    }
+    set status(val) {
+      if (!val) {
+        delete this.rootElement.dataset.status;
+      } else {
+        this.rootElement.dataset.status = val;
+      }
+    }
+
+    /**
+     * Renders static error page as &lt;content>, when the GitHub
+     * API rate limit is met (i.e. you can't send anymore requests,
+     * until credentials upgrade or reset timeout has passed).
+     * @param  {number} reset  - Value of GitHub API reponse headers field X-RateLimit-Reset
+     * @return {Promise}
+     */
+    static renderRateLimitError(reset) {
+      return new Promise((resolve, reject) => {
+        /* ---- DOM Elements for displaying times ---- */
+        // reset-in container for hours/minutes/seconds until reset
+        let resetInRootElement = null;
+        // references to DOM Elements, displaying hours, minutes, seconds until reset
+        let resetInValueElements = { h: null, m: null, s: null };
+        // hours, minutes, seconds values for reset
+        let resetInValues = { h: 0, m: 0, s: 0 };
+        // id of countdown interval (calling setTimes)
+        let setTimesInterval = null;
+        // helper to add leading zeros to numbers
+        let padNumber = (n, digits) => {
+          let pad = Array(digits).fill('0').join('');
+          return pad.substring(0, digits - n.toString().length) + n;
+        };
+
+        // gets called every second by setInterval
+        let setTimes = () => {
+
+          /* ---- Mathmagics with Dates ---- */
+          // reset time from headers (epoch time * 1000, since JS works with mseconds)
+          let resetAtDate = new Date(reset * 1000);
+          // reference date object for now
+          let referenceNowDate = new Date();
+
+          // seconds from now to reset time
+          let resetInInt = (resetAtDate - referenceNowDate) / 1000;
+          if (resetInInt &lt; 0) {
+            resetInRootElement.dataset.done = '';
+            return window.clearInterval(setTimesInterval);
+          }
+          // set hours, minutes, seconds of now -> reset
+          resetInValues.h = Math.floor(resetInInt / 3600);
+          resetInValues.m = Math.floor((resetInInt - resetInValues.h * 3600) / 60);
+          resetInValues.s = Math.floor(resetInInt - resetInValues.m * 60 - resetInValues.h * 3600);
+
+          // set values
+          for (let key in resetInValueElements) {
+            resetInValueElements[key].innerText = padNumber(resetInValues[key], 2);
+          }
+        };
+
+        // read error page markup from fs
+        require('fs').readFile('./lib/ratelimit-error.html', (err, html) => {
+          if (err) {
+            return reject(err);
+          }
+          // parse html text into a #Document
+          let domParser = new DOMParser();
+          let htmlElements = domParser.parseFromString(html, 'text/html');
+          // fill &lt;content> with error page Elements
+          window.app.ui.setContent(htmlElements);
+
+          // container for reset countdown
+          resetInRootElement = window.document.querySelector('[data-reset-in]');
+          // hours/minutes/seconds elements ot reset countdown
+          for (let key in resetInValueElements) {
+            resetInValueElements[key] = resetInRootElement.querySelector(`[data-reset-in-${key}]`);
+          }
+          // update reset countdown, every second
+          setTimesInterval = window.setInterval(setTimes, 1000);
+          resolve();
+        });
+
+      });
+    }
+  }
+
+  window.app.GitHubElement = GitHubElement;
+
+})();
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Thu Jan 12 2017 09:57:50 GMT+0100 (CET) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

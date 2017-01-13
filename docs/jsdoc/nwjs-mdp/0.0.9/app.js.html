@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>app.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="GitHubElement.html">GitHubElement</a><ul class='methods'><li data-type='method'><a href="GitHubElement.html#.renderRateLimitError">renderRateLimitError</a></li><li data-type='method'><a href="GitHubElement.html#parseHeaders">parseHeaders</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-_debug.html">_debug</a><ul class='methods'><li data-type='method'><a href="module-_debug.html#.exceedUnauthedRatioLimit">exceedUnauthedRatioLimit</a></li><li data-type='method'><a href="module-_debug.html#.simulateRatioLimitError">simulateRatioLimitError</a></li></ul></li><li><a href="module-tooltip.html">tooltip</a><ul class='methods'><li data-type='method'><a href="module-tooltip.html#.toolTip.clearTimeout">toolTip.clearTimeout</a></li><li data-type='method'><a href="module-tooltip.html#.toolTip.hide">toolTip.hide</a></li><li data-type='method'><a href="module-tooltip.html#.toolTip.init">toolTip.init</a></li><li data-type='method'><a href="module-tooltip.html#.toolTip.show">toolTip.show</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#_loadScript">_loadScript</a></li><li><a href="global.html#parseArgv">parseArgv</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">app.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+const fs = require('fs');
+const accessSync = fs.accessSync;
+
+/**
+ * Reads -f and -w options from argv and returns
+ * their values as members of an object.
+ * @param  {Array.&lt;{string}>} argv
+ * @return {{ f:string,w:bool }}
+ */
+let parseArgv = (argv) => {
+
+  // map 'true', 'false' strings to bool
+  argv = argv.map((val) => /^(false|true)$/.test(val) ? val === 'true' : val);
+
+  // default `option: value`s
+  // overwritten by found argv options
+  let options = {
+    w: true,      // auto attach file-watcher; -w true
+    d: false      // debug mode
+  };
+  for (let key in options) {
+    // index of -key in argv array
+    let flagIdx = argv.indexOf('-' + key);
+    // if option is used
+    if (flagIdx > -1) {
+      // overwrite default value with
+      // value of next item in argv array
+      options[key] = argv[flagIdx + 1];
+    }
+  }
+
+  // expect input file path as last argument
+  options.f = argv[argv.length - 1];
+  return options;
+};
+
+/**
+ * Load scripts, using an HTMLScriptElement.  
+ * Resolve and reject of the returned Promise are the element's
+ * onload and onerror handlers.
+ * @param  {string|Array.&lt;string>} srcArray - A path or array of paths to load
+ * @return {Promise}
+ */
+let _loadScript = (src) => {
+
+  // put single source into array
+  let srcPaths = src instanceof Array ? src : [ src ];
+
+  let buildScriptElement = (src) => {
+    // &lt;script>&lt;/script>
+    let scriptEl = document.createElement('script');
+    // define attributes...
+    let attrs = {
+      src: src,
+      charset: 'utf-8',
+      type: 'application/javascript'
+    };
+    // ... and add them to the element
+    for (let name in attrs) {
+      scriptEl.attributes.setNamedItem(document.createAttribute(name));
+      scriptEl[name] = attrs[name];
+    }
+
+    return scriptEl;
+  };
+
+  let srcPromises = srcPaths.map((path) => {
+    return new Promise((resolve, reject) => {
+
+      let scriptElement = buildScriptElement(path);
+      scriptElement.onload = resolve;
+      scriptElement.onerror = reject;
+
+      // add the &lt;script> elements
+      document.head.appendChild(scriptElement);
+    });
+  });
+
+  return Promise.all(srcPromises);
+};
+
+let _init = () => {
+  const gui = require('nw.gui');
+  const path = require('path');
+
+  // get options object from argv
+  const options = parseArgv(gui.App.argv);
+  // resolve possibly relative inputPath
+  let inputPath = path.resolve(process.env.PWD, options.f);
+
+  // test readablity of given input path
+  let fileReadable = false;
+  try {
+    accessSync(inputPath, fs.constants.R_OK);
+    fileReadable = true;
+  } catch (err) {}
+
+  // alert about missing input
+  // default to own README
+  if (!inputPath || !fileReadable) {
+    alert(`Can't read from: ${inputPath}\nDefaulting to .mdP's README...`);
+    inputPath = path.resolve(process.cwd(), './README.md');
+  };
+
+  // --------------------- MAIN APP --------------------- //
+  const app = {
+    ui: null,               // ui functions
+    toolTip: null,          // toolTip functions
+    GitHubElement: null,    // GitHubElement constructor
+    RenderRequest: null,    // RenderRequest constructor
+    request: null           // RenderRequest instance - handling communication with GitHub API
+  };
+
+  // augment app with debug goodies, if `-d(ebug) true`
+  if (options.d) {
+    _loadScript('./lib/debug.js').then(() => {
+      window._debug = app._debug;
+      console.debug('Welcome in debug mode!');
+      console.debug('Goodies are in app._debug (or simply _debug).');
+    });
+  }
+
+  // executes the RenderRequest and displays its result
+  app.render = () => {
+
+    /**
+     * Sets UI to 'after-render' state
+     * @inner
+     * @param  {object} headers Response headers
+     */
+    let finishUI = (headers) => {
+      // stop spinning the refresh button
+      app.ui.toggleRequestAnimation();
+      // update github rate limit
+      app.ui.githubElement.parseHeaders(headers, true);
+    };
+    // send the refresh icon spinning
+    app.ui.toggleRequestAnimation(true);
+
+    // execute request
+    // returns itself (i.e. instance of RenderRequest)
+    app.request.send().then((req) => {
+      // update content with result markup
+      app.ui.setContent(req.compiledHTMLDocument);
+      // flash effect to notify user
+      app.ui.flashContent();
+
+      finishUI(req.resHeaders);
+    })
+    .catch((err) => {
+      // err 403 Forbidden means, the ratio limit is met
+      if (err.statusCode === 403) {
+        // set UI with data from responses headers (X-RateLimit-*)
+        finishUI(err.response.headers);
+        // show static error page for RateLimit exhaustion
+        app.GitHubElement.renderRateLimitError(app.ui.githubElement.rateLimitData.reset);
+      }
+      console.log(err);
+    });
+  };
+
+  // enables/disables file-watcher
+  app.toggleFilewatcher = () => {
+    // state to toggle to
+    // true/toggle on, when no fileWatcher is set for the RenderRequest
+    // false/toggle off, when RenderRequest has fileWatcher
+    let toState = app.request.fileWatcher === null;
+
+    if (toState) {
+      // start new file-watcher
+      app.request.startFileWatcher((type, fileName) => {
+        if (type === 'change') {
+          app.request.updateInput() // update input from changed file
+          .then(app.render)     // render with updated input
+          .catch(() => {});     // ignore errors
+        }
+      });
+    } else {
+      // stop file-watcher; sets app.request.fileWatcher = null
+      app.request.stopFileWatcher();
+    }
+    // show new state in UI
+    app.ui.toggleFilewatcher(toState);
+  };
+
+  // opens or closes raw html modal
+  // sets current rendering
+  app.toggleRawModal = () => {
+    app.ui.toggleRawModal(app.request.compiled);
+  };
+
+  // closes the app; dummy for cleanup routine
+  app.close = () => gui.App.quit();
+
+  // expose app to window context
+  window.app = app;
+  // expose system clipboard to window context
+  window.clipboard = gui.Clipboard.get();
+
+  _loadScript([
+    './lib/ui.js',                  // window.app.ui
+    './lib/tooltip.cls.js',         // window.app.toolTip
+    './lib/render-request.js',      // window.app.RenderRequest
+    './lib/github-element.cls.js'   // window.app.GitHubElement
+  ])
+  .then(() => {
+    // init main layout, buttons, etc.
+    return window.app.ui.init();
+  })
+  .then(() => {
+    return window.app.toolTip.init();
+  })
+  .then(() => {
+    app.request = new app.RenderRequest(inputPath, 'raw');
+    app.ui.setFileNameTitle(inputPath);
+    // render and display `inputPath`
+    app.render();
+
+    // enable file-watcher if -w is true
+    if (options.w) {
+      app.toggleFilewatcher();
+    }
+  })
+  .catch((err) => {
+    if (err) {
+      console.error(err);
+    }
+  });
+
+};
+
+// init app when all DOM Elements are available
+document.addEventListener('DOMContentLoaded', _init);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Thu Jan 12 2017 09:57:50 GMT+0100 (CET) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

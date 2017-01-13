@@ -2,4 +2,3 @@
 img/assets/
 node_modules/
 *.log
-docs/jsdoc
