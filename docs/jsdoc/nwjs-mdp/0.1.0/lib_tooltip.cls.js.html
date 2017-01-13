@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>lib/tooltip.cls.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="GitHubElement.html">GitHubElement</a><ul class='methods'><li data-type='method'><a href="GitHubElement.html#.renderRateLimitError">renderRateLimitError</a></li><li data-type='method'><a href="GitHubElement.html#parseHeaders">parseHeaders</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-_debug.html">_debug</a><ul class='methods'><li data-type='method'><a href="module-_debug.html#.exceedUnauthedRatioLimit">exceedUnauthedRatioLimit</a></li><li data-type='method'><a href="module-_debug.html#.simulateRatioLimitError">simulateRatioLimitError</a></li></ul></li><li><a href="module-tooltip.html">tooltip</a><ul class='methods'><li data-type='method'><a href="module-tooltip.html#.toolTip.clearTimeout">toolTip.clearTimeout</a></li><li data-type='method'><a href="module-tooltip.html#.toolTip.hide">toolTip.hide</a></li><li data-type='method'><a href="module-tooltip.html#.toolTip.init">toolTip.init</a></li><li data-type='method'><a href="module-tooltip.html#.toolTip.show">toolTip.show</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#_loadScript">_loadScript</a></li><li><a href="global.html#parseArgv">parseArgv</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">lib/tooltip.cls.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+(() => {
+
+  /**
+   * Tooltip component for title bar icons
+   * @module tooltip
+   */
+  let toolTip = {
+    toolTipElement: null,
+    triggerElements: [],
+    timeouts: {
+      hide: null,
+      show: null
+    },
+    get isOpen() {
+      return !!toolTip.toolTipElement.dataset.open;
+    },
+    set isOpen(val) {
+      val ? toolTip.toolTipElement.dataset.open = 'true' : delete toolTip.toolTipElement.dataset.open;
+    }
+  };
+
+  /**
+   * Initializes tooltip component
+   * @memberOf module:tooltip
+   * @return {Promise}
+   */
+  toolTip.init = () => {
+    return new Promise((resolve) => {
+      toolTip.toolTipElement = document.querySelector('[data-tooltip]');
+      toolTip.triggerElements = Array.from(document.querySelectorAll('[data-tooltip-text]'));
+
+      toolTip.triggerElements.forEach((trigger) => trigger.addEventListener('mouseenter', _mouseEnter));
+      toolTip.triggerElements.forEach((trigger) => trigger.addEventListener('mouseleave', _mouseLeave));
+
+      resolve();
+    });
+  };
+
+  /**
+   * Shows the tooltip container, by setting the text and sliding
+   * its center to given x position.
+   * @memberOf module:tooltip
+   * @param  {string}  text    - Text to display on tooltip
+   * @param  {number}  showAtX - X coordinate, the center of the tooltip shall move to
+   * @return {Promise}         - Resolves, when (right-value-) transition ends
+   */
+  toolTip.show = (text, showAtX) => {
+    return new Promise((resolve, reject) => {
+      toolTip.clearTimeout('hide');
+
+      let ttElement = toolTip.toolTipElement;
+
+      // set text before calculating new position ('cause based on width)
+      ttElement.innerText = text;
+
+      // right end of tooltip @ target position
+      let rightX = window.innerWidth - showAtX;
+      // center of tooltip @ target position
+      let centerX = rightX - ttElement.offsetWidth / 2;
+      // catch and fix clipping
+      centerX = centerX > 14 ? centerX : 14;
+
+      ttElement.addEventListener('transitionEnd', resolve);
+      ttElement.style.right = `${centerX}px`;
+      toolTip.isOpen = true;
+    });
+  };
+
+  /**
+   * Hides the tooltip.
+   * @memberOf module:tooltip
+   * @return {Promise}
+   */
+  toolTip.hide = () => {
+    return new Promise((resolve, reject) => {
+
+      let ttElement = toolTip.toolTipElement;
+      ttElement.addEventListener('transitionEnd', resolve);
+      ttElement.style.right = `-${(ttElement.offsetWidth) + 10}px`;
+      toolTip.isOpen = false;
+    });
+  };
+
+  /**
+   * Clears a timeout that would hide or show the tooltip.
+   * @memberOf module:tooltip
+   * @param {string} type - 'show' or 'hide'; whichever timeout shall be canceled
+   */
+  toolTip.clearTimeout = (type) => {
+    if (toolTip.timeouts[type]) {
+      window.clearTimeout(toolTip.timeouts[type]);
+      toolTip.timeouts[type] = null;
+    }
+  };
+
+  /**
+   * Handler for `mouseleave` event on tooltip triggers.
+   * @param  {MoueEvent} mouseEvent
+   */
+  let _mouseLeave = (mouseEvent) => {
+    mouseEvent.preventDefault();
+    toolTip.clearTimeout('show');
+    toolTip.clearTimeout('hide');
+    toolTip.timeouts.hide = window.setTimeout(toolTip.hide, 500);
+    return false;
+  };
+
+  /**
+   * Handler for `mouseenter` event on tooltip triggers.
+   * @param  {MoueEvent} mouseEvent
+   */
+  let _mouseEnter = (mouseEvent) => {
+
+    let text = mouseEvent.target.dataset.tooltipText;
+    if (!text) {
+      return;
+    }
+
+    mouseEvent.preventDefault();
+
+    // immediately change text and slide over, if tooltip
+    // is already visible
+    if (toolTip.isOpen) {
+      toolTip.show(text, mouseEvent.x);
+    } else {
+      // cancel previous timeout
+      toolTip.clearTimeout('show');
+      // start timeout to show tooltip
+      toolTip.timeouts.show = window.setTimeout(() => {
+        toolTip.show(text, mouseEvent.x);
+      }, 1000);
+    }
+
+    return false;
+  };
+
+  // expose tooltip module to global context
+  window.app.toolTip = toolTip;
+
+})();
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Fri Jan 13 2017 06:23:56 GMT+0100 (CET) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
