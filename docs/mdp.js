@@ -2,7 +2,6 @@
 
 (() => {
 
-
   let mdP = {
     agent: window.navigator.userAgent,
     os: {
@@ -23,7 +22,7 @@
         prefix: '/nwjs.app/Contents/Resources/nwjs-mdp.nw/'
       },
       android: {
-        rx:  /Android/,
+        rx: /Android/,
         prefix: './'
       },
       ios: {
@@ -34,8 +33,7 @@
         prefix: './'
       }
     }
-  }
-
+  };
 
   mdP.setTitleFileName = () => {
     let $fnElement = $('.filename');
