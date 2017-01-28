@@ -73,10 +73,10 @@ Closes the App.
 
 The debug mode augments the main app (or `window.app`) with a `_debug` object. Its members are
 
-  - **`exceedUnauthedRatioLimit`** [[docs](https://rbeer.github.io/nwjs-mdp/jsdoc/0.1.0/module-_debug.html#.simulateRatioLimitError)]  
+  - **`exceedUnauthedRatioLimit`** [[docs](https://rbeer.github.io/nwjs-mdp/jsdoc/nwjs-mdp/0.1.0/module-_debug.html#.exceedUnauthedRatioLimit)]  
     Exceeds GitHub API call limit for unauthorized users. WARNING: This will, like _for
     realz_, ban your current IP from making any API calls, until the reset period
     (up to 1h) is over. _"I repeat, this is not a drill! ~chrrck~ "_
-  - **`simulateRatioLimitError`** [[docs](https://rbeer.github.io/nwjs-mdp/jsdoc/0.1.0/module-_debug.html#.exceedUnauthedRatioLimit)]  
+  - **`simulateRatioLimitError`** [[docs](https://rbeer.github.io/nwjs-mdp/jsdoc/nwjs-mdp/0.1.0/module-_debug.html#.simulateRatioLimitError)]  
     Simulates exceeded ratio limit to debug error page. This one really is a simulation.
     It doesn't make a single API call.
